@@ -9,6 +9,9 @@
 
 ### 📄 기능명세서
 
+[👀 기능명세서 노션링크](https://www.notion.so/Server-5e780fef15c440fba3e6ddf43a0452a6)
+![image](https://user-images.githubusercontent.com/22907830/86483312-c10bc080-bd8e-11ea-9ae0-41dc220092da.png)
+
 ### 🖨 Api 명세서 (링크)
 
 ### 📦 ERD
