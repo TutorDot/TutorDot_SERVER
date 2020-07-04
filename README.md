@@ -17,5 +17,9 @@
 ### 📦 ERD
 
 ### 👭🏼 역할분담
+- all : 기능 명세서 정리, 테이블 초기 셋팅
+- 서영 : api 명세서 스프레드시트 정리, api 명세서 wiki(lecture.js)
+- 세희 : api 명세서 wiki(user.js, diary.js)
+- 유영 : api 명세서 wiki(calander.js)
 
 ### 🛠 Dependencies Module (package.json)
