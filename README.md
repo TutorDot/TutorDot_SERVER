@@ -14,6 +14,11 @@
 
 ### 🖨 Api 명세서 (링크)
 
+#### 스프레드 시트버전
+<img width="1085" alt="스크린샷 2020-07-04 오후 8 45 32" src="https://user-images.githubusercontent.com/22907830/86512223-2b7a3a80-be3b-11ea-878a-d304fb424976.png">
+
+#### wiki 주소
+
 ### 📦 ERD
 
 ### 👭🏼 역할분담
