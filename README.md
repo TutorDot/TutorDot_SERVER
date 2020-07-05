@@ -14,8 +14,11 @@
 
 ### 🖨 Api 명세서 (링크)
 
+####  Wiki 버전
+[👀 튜터닷 api 명세서 Wiki링크](https://github.com/TutorDot/TutorDot_SERVER/wiki)
+
 #### 스프레드 시트버전
-![image](https://user-images.githubusercontent.com/22907830/86526450-3383ba00-becf-11ea-945a-e5c5c2b06544.png)
+![image](https://user-images.githubusercontent.com/22907830/86536013-60f85400-bf1f-11ea-81c4-07e346e126eb.png)
 
 #### wiki 주소
 
@@ -23,8 +26,8 @@
 
 ### 👭🏼 역할분담
 - all : 기능 명세서 정리, 테이블 초기 셋팅
-- 서영 : api 명세서 스프레드시트 정리, api 명세서 wiki(lecture.js)
-- 세희 : api 명세서 wiki(user.js, diary.js)
-- 유영 : api 명세서 wiki(calander.js)
+- 서영 🧞‍♂️ : api 명세서 스프레드시트 정리, api 명세서 wiki(lecture.js)
+- 세희 🧞‍♀️ : api 명세서 wiki(user.js, diary.js)
+- 유영 🧞 : api 명세서 wiki(calander.js)
 
 ### 🛠 Dependencies Module (package.json)
