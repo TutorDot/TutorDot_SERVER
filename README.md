@@ -12,12 +12,12 @@
 [👀 기능명세서 노션링크](https://www.notion.so/Server-5e780fef15c440fba3e6ddf43a0452a6)
 ![왕왕](https://user-images.githubusercontent.com/53335160/86526523-f3710700-becf-11ea-8d7b-6e23e9c2b08e.png)
 
-### 🖨 Api 명세서 (링크)
+### 🖨 Api 명세서 (링크) ✔️
 
-####  Wiki 버전 ✔️
+####  Wiki 버전
 [👀 튜터닷 api 명세서 Wiki링크](https://github.com/TutorDot/TutorDot_SERVER/wiki)
 
-#### 스프레드 시트버전 ✔️
+#### 스프레드 시트버전
 ![image](https://user-images.githubusercontent.com/22907830/86609880-8781c200-bfe7-11ea-91c1-82440507758a.png)
 
 ### 📦 ERD
