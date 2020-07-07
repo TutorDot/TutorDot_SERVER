@@ -26,6 +26,7 @@
 ![image](https://user-images.githubusercontent.com/22907830/86609880-8781c200-bfe7-11ea-91c1-82440507758a.png)
 
 ### 📦 ERD
+![ERD_real](https://user-images.githubusercontent.com/53335160/86785752-0b968100-c09e-11ea-9b66-a6da96137749.png)
 
 ### 👭🏼 역할분담 ✔️
 - all : **기능 명세서 정리**, **테이블 초기 셋팅(변수이름 서)**, 보일러플레이트 작성, Dependencies Module작성, api에 해당하는 뷰캡쳐, 코드작성(notice.js)
