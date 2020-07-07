@@ -34,6 +34,32 @@
 - 세희 🧞‍♀️ : **api 명세서 wiki(user.js, diary.js, notice.js)**, ERD 작성 및 검토, 코드작성(user.js, diary.js)
 - 유영 🧞 : **api 명세서 wiki(calander.js)**, ERD 작성 및 검토, 코드작성(calander.js)
 
-### 🛠 Dependencies Module (package.json)
+### 🛠 Dependencies Module (package.json) ✔️
+```javascript
+{
+  "name": "practice",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.696.0",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
+    "pbkdf2": "^3.0.17",
+    "mysql": "^2.18.1",
+    "promise-mysql": "^4.1.3",
+    "rand-token": "^1.0.1"
+  }
+}
+```
 
 ### 📷 api에 해당하는 뷰캡쳐
