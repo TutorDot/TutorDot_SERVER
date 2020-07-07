@@ -25,7 +25,10 @@
 #### 스프레드 시트버전
 ![image](https://user-images.githubusercontent.com/22907830/86609880-8781c200-bfe7-11ea-91c1-82440507758a.png)
 
-### 📦 ERD
+#### 📷 뷰별 api 명세서 [화면과 함께 설명 .pdf] - 화면별 뷰캡쳐
+[👀 파일 다운로드](https://www.notion.so/Server-5e780fef15c440fba3e6ddf43a0452a6)
+
+### 📦 ERD ✔️
 ![ERDERDERD](https://user-images.githubusercontent.com/53335160/86786445-f9691280-c09e-11ea-8dd2-e958437bfde9.png)
 
 ### 👭🏼 역할분담 ✔️
@@ -61,5 +64,3 @@
   }
 }
 ```
-
-### 📷 api에 해당하는 뷰캡쳐
