@@ -23,10 +23,10 @@
 [👀 튜터닷 api 명세서 Wiki링크](https://github.com/TutorDot/TutorDot_SERVER/wiki)
 
 #### 스프레드 시트버전
-![image](https://user-images.githubusercontent.com/22907830/86609880-8781c200-bfe7-11ea-91c1-82440507758a.png)
+![image](https://user-images.githubusercontent.com/22907830/86925418-d5273780-c16b-11ea-9d7d-9e1f1768f61e.png)
 
 #### 📷 뷰별 api 명세서 [화면과 함께 설명 .pdf] - 화면별 뷰캡쳐
-[👀 파일 다운로드](https://www.notion.so/Server-5e780fef15c440fba3e6ddf43a0452a6)
+[👀 파일 다운로드](https://drive.google.com/file/d/1Zxlv2JgsUoj22IsQl2P9Y8PxnCa1Rx8E/view?usp=sharing)
 
 ### 📦 ERD ✔️
 ![ERDERDERD](https://user-images.githubusercontent.com/53335160/86786445-f9691280-c09e-11ea-8dd2-e958437bfde9.png)
