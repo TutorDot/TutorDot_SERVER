@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const lectureController = require('../controllers/lecture');
-const AuthUtil = require('../middlewares/auth')
+const AuthUtil = require('../middlewares/auth');
 
 /* 수업 추가  post : [ /lecture ] */
 router.post('/', AuthUtil.checkToken, lectureController.createLecture);
@@ -13,11 +13,10 @@ router.get('/', AuthUtil.checkToken, lectureController.getLectureAll);
 /* 수업 상세 조회  get : [ /lecture/:lid ] */
 router.get('/:lid', AuthUtil.checkToken, lectureController.getLectureById);
 
-
 /* 수업 정보 수정  put : [ /lecture/:lid] */
 router.put('/:lid', AuthUtil.checkToken, lectureController.updateLecture);
 
-/* 토글 수업목록 조회  get : [ /toggle ] */
+/* 토글 수업목록 조회  get : [ /lecture/toggle ] */
 router.get('/toggle', AuthUtil.checkToken, lectureController.getLectureNames);
 
 /* 수업방 나가기  delete : [ /lecture/:lid ] */

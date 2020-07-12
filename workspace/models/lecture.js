@@ -153,12 +153,16 @@ const lecture = {
     },
 
     /* 토글 수업목록 조회  get : [ /toggle ] */
-    getLectureNames: async () => {
-
+    getLectureNames: async (userIdx) => {
+        console.log(userIdx)
+        const query = `SELECT lectureId, lectureName FROM lecture INNER JOIN connect 
+        WHERE connect.lecture_lectureId = lecture.lectureId and connect.user_userId = "${userIdx}";`
         try {
-
+            const result = await pool.queryParam(query);
+            return result;
         } catch (err) {
-
+            console.log('getLectureNames ERROR : ', err);
+            throw err;
         }
     },
 

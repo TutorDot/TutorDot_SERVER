@@ -130,6 +130,10 @@ module.exports = {
 
     READ_SPECIFIC_LECTURE_SUCCESS: "특정 수업 일정 조회 성공",
 
+    //캘린더 [일정 삭제]
+
+    DELETE_CLASS_SUCCESS: "일정 삭제 성공",
+
     //알림 [상시 알림 조회] , [자정 알림 조회]
 
     FETCH_NEW_ALARM: "새로운 알림 불러오기",

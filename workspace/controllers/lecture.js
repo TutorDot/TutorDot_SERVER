@@ -153,12 +153,65 @@ const lecture = {
 
     /* 모든 게시글 조회  put : [ /lecture/:lid] */
     updateLecture: async (req, res) => {
+        // const userIdx = req.decoded.userId;
+        // const {
+        //     lid
+        // } = req.params;
+
+        // const {
+        //     lectureName,
+        //     color,
+        //     schedules,
+        //     orgLocation,
+        //     bank,
+        //     accountNumber,
+        //     totalHours,
+        //     price
+        // } = req.body;
+
+        // // 데이터 값이 없으면 - NULL_VALUE
+        // if (!lectureName || !totalHours || !price) {
+        //     res.status(CODE.BAD_REQUEST)
+        //         .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        //     return;
+        // }
+
+        // // id에 해당하는 게시글이 없다면
+        // const post = await Post.getPostById(id)
+        // if (post.length === 0) {
+        //     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_POST_IDX));
+        // }
+
+        // const idx = await Post.update(id, title, content)
+        // // 수정 실패
+        // if (idx === -1) {
+        //     return res.status(statusCode.DB_ERROR)
+        //         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        // }
+
+        // // 수정된 게시글 불러오기
+        // const newPost = await Post.getPostById(id);
+
+        // if (post.length === 0) {
+        //     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_POST_IDX));
+        // }
+        // // 게시글 수정 성공
+        // res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.UPDATE_POST, newPost[0]))
 
     },
 
     /* 토글 수업목록 조회  get : [ /toggle ] */
     getLectureNames: async (req, res) => {
-
+        const userIdx = req.decoded.userId;
+        console.log(userIdx)
+        if (!userIdx) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        }
+        const result = await Lecture.getLectureNames(userIdx)
+        console.log(result)
+        // 초대 정보 불러오기 성공
+        res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.CHECK_LECTURE_NAME_LIST_SUCCESS, result));
     },
 
     /* 수업방 나가기  delete : [ /lecture/:lid ] */
