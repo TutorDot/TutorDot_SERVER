@@ -17,8 +17,8 @@ router.use("/user", require("./user"));
 // // 캘린더
 // router.use('/calander', require('./calander'));
 
-// // 수업일지
-// router.use('/diary', require('./diary'));
+// 수업일지
+router.use('/diary', require('./diary'));
 
 // // 알림
 // router.use('/notice', require('./notice'));
