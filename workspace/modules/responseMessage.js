@@ -34,7 +34,7 @@ module.exports = {
 
     DELETE_USER: "회원 탈퇴 성공",
 
-    ALREADY_ID: "존재하는 ID 입니다.",
+    ALREADY_ID: "존재하는 email 입니다.",
 
 
     // 로그인
@@ -140,5 +140,8 @@ module.exports = {
 
     //알림 [특정 수업 알림 조회]
 
-    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공"
+    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공",
+
+    //DB ERROR
+    DB_ERROR: "데이터베이스 오류"
 };
