@@ -2,6 +2,7 @@ const pool = require('../modules/pool');
 const lectureTable = 'lecture';
 const scheduleTable = 'schedule';
 const classTable = 'class';
+const diaryTable = 'diary';
 
 const FAIL = -1
 
@@ -42,7 +43,6 @@ const lecture = {
 
     /* 수업 스케줄 셋팅 자동 추가 */
     setSchedule: async (day, orgStartTime, orgEndTime, lectureId) => {
-
         const fields = 'orgStartTime, orgEndTime, day, lecture_lectureId';
         const questions = `?, ?, ?, ?`;
         const values = [orgStartTime, orgEndTime, day, lectureId];
@@ -63,9 +63,15 @@ const lecture = {
     },
 
     /* class 디비에 일정 자동 추가 */
-    createClassesAuto: async () => {
+    createClassAuto: async (startTime, endTime, hour, times, location, classDate, lecture_lectureId) => {
+        const fields = 'startTime, endTime, hour, times, location, classDate, lecture_lectureId';
+        const questions = `?, ?, ?, ?, ?, ?, ?`;
+        const values = [startTime, endTime, hour, times, location, classDate, lecture_lectureId];
+        const query = `INSERT INTO ${classTable}(${fields}) VALUES(${questions})`;
         try {
-
+            const result = await pool.queryParamArr(query, values);
+            const classId = result.insertId;
+            return classId
         } catch (err) {
             if (err.errno == 1062) {
                 console.log('createClassesAuto ERROR : ', err.errno, err.code);
@@ -77,9 +83,15 @@ const lecture = {
     },
 
     /* diary 디비에 일지 자동 추가 */
-    createDiariesAuto: async () => {
+    createDiaryAuto: async (lectureId, classId) => {
+        const fields = 'classProgress, homework, lecture_lectureId, class_classId';
+        const questions = `?, ?, ?, ?`;
+        const values = ["진도를 입력해주세요", "숙제를 입력해주세요", lectureId, classId];
+        const query = `INSERT INTO ${diaryTable}(${fields}) VALUES(${questions})`;
         try {
-
+            const result = await pool.queryParamArr(query, values);
+            const diaryId = result.insertId;
+            return diaryId
         } catch (err) {
             if (err.errno == 1062) {
                 console.log('createClassesAuto ERROR : ', err.errno, err.code);
