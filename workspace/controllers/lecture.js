@@ -25,7 +25,7 @@ const lecture = {
             } = schedule;
             timeTable[day] = [orgStartTime, orgEndTime]
         }
-        console.log(timeTable);
+        //console.log(timeTable);
 
         const week = ['일', '월', '화', '수', '목', '금', '토'];
         const today = new Date()
@@ -73,7 +73,6 @@ const lecture = {
     createLecture: async (req, res) => {
 
         const userIdx = req.decoded.userId;
-        console.log(userIdx);
 
         const {
             lectureName,
@@ -131,7 +130,6 @@ const lecture = {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
         const conId = await Lecture.createConnect(userIdx, lectureId);
-        console.log(conId)
         if (conId === -1) {
             return res.status(CODE.DB_ERROR)
                 .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
@@ -165,14 +163,38 @@ const lecture = {
 
     /* 수업방 나가기  delete : [ /lecture/:lid ] */
     deleteConnection: async (req, res) => {
+        const userIdx = req.decoded.userId;
+        const {
+            lid
+        } = req.params;
 
+        // 값이 없으면 - NULL_VALUE
+        if (!userIdx || !lid) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+            return;
+        }
+
+        // 해당 연결 아이디가 없다면
+        const conId = await Lecture.getconId(userIdx, lid)
+        if (conId.length === 0) {
+            return res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.NO_LECTURE));
+        }
+
+        // 연결 행 삭제
+        const idx = await Lecture.deleteConnection(conId[0].conId);
+        if (idx === -1) {
+            return res.status(CODE.DB_ERROR)
+                .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
+        // 연결 해제 성공
+        res.status(CODE.OK).send(util.success(CODE.NO_CONTENT, MSG.EXIT_LECTURE_SUCCESS))
     },
 
     /* 수업방 연결  post : [ /lecture/invitation ] */
     createConnection: async (req, res) => {
 
         const userIdx = req.decoded.userId;
-        console.log(userIdx);
         const {
             code
         } = req.body;
@@ -198,7 +220,6 @@ const lecture = {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
         const conId = await Lecture.createConnect(userIdx, lectureId);
-        console.log(conId)
         if (conId === -1) {
             return res.status(CODE.DB_ERROR)
                 .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
@@ -217,7 +238,6 @@ const lecture = {
         const {
             lid
         } = req.params;
-        console.log(lid)
         const code = await Lecture.getCodeById(lid)
         // 수업 아이디 확인
         if (code.length === 0) {

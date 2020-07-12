@@ -102,7 +102,7 @@ const lecture = {
         }
     },
 
-    /* 수업 연결 */
+    /* 수업 연결 [ /lecture/:lid ] */
     createConnect: async (userIdx, lectureId) => {
         const fields = 'user_userId, lecture_lectureId';
         const questions = `?, ?`;
@@ -163,24 +163,31 @@ const lecture = {
     },
 
     /* 수업방 나가기  delete : [ /lecture/:lid ] */
-    deleteConnection: async () => {
-
+    deleteConnection: async (conId) => {
+        const query = `DELETE FROM ${connectTable} WHERE conId="${conId}"`;
         try {
+            const result = await pool.queryParam(query);
+            const insertId = result.insertId;
+            return insertId;
 
         } catch (err) {
-
+            console.log('delete ERROR : ', err);
+            throw err;
         }
     },
 
-    /* 수업방 연결  post : [ /lecture/invitation ] */
-    createConnection: async () => {
-
+    /* 연결 아이디 확인 */
+    getconId: async (userIdx, lid) => {
+        const query = `SELECT conId FROM ${connectTable} WHERE user_userId = "${userIdx}" AND lecture_lectureId = "${lid}"`;
         try {
-
+            const conId = await pool.queryParam(query);
+            return conId
         } catch (err) {
-
+            console.log('checkLid ERROR : ', err);
+            throw err;
         }
     },
+
 
     /* 수업 아이디 확인 */
     checkLid: async (lid) => {
