@@ -1,15 +1,92 @@
 const pool = require('../modules/pool');
-const table = 'lecture';
+const lectureTable = 'lecture';
+const scheduleTable = 'schedule';
+const classTable = 'class';
+
+const FAIL = -1
 
 const lecture = {
 
-    /* 수업 추가  post : [ /lecture ] */
-    createLecture: async () => {
+    /* 수업 중복 확인 */
+    checkLecture: async (name) => {
+        const query = `SELECT * FROM ${lectureTable} WHERE lectureName="${name}"`;
+        try {
+            const result = await pool.queryParam(query);
+            return result.length === 0 ? false : true
+        } catch (err) {
+            console.log('checkLecture ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* 수업 추가  post : [ /lecture ] */
+    createLecture: async (lectureName, color, orgLocation, bank, accountNumber, totalHours, price) => {
+        const code = Math.random().toString(36).substring(5);
+        const fields = 'lectureName, color, orgLocation, bank, accountNo, depositCycle, price, code';
+        const questions = `?, ?, ?, ?, ?, ?, ?, ?`;
+        const values = [lectureName, color, orgLocation, bank, accountNumber, totalHours, price, code];
+        const query = `INSERT INTO ${lectureTable}(${fields}) VALUES(${questions})`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            const lectureId = result.insertId;
+            return lectureId
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('createLecture ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('createLecture ERROR : ', err);
+            throw err;
+        }
+    },
+
+    /* 수업 스케줄 셋팅 자동 추가 */
+    setSchedule: async (day, orgStartTime, orgEndTime, lectureId) => {
+
+        const fields = 'orgStartTime, orgEndTime, day, lecture_lectureId';
+        const questions = `?, ?, ?, ?`;
+        const values = [orgStartTime, orgEndTime, day, lectureId];
+        const query = `INSERT INTO ${scheduleTable}(${fields}) VALUES(${questions})`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            const scheduleId = result.insertId;
+            return scheduleId
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('setSchedule ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('setSchedule ERROR : ', err);
+            throw err;
+        }
+
+    },
+
+    /* class 디비에 일정 자동 추가 */
+    createClassesAuto: async () => {
         try {
 
         } catch (err) {
+            if (err.errno == 1062) {
+                console.log('createClassesAuto ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('createClassesAuto ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* diary 디비에 일지 자동 추가 */
+    createDiariesAuto: async () => {
+        try {
+
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('createClassesAuto ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('createClassesAuto ERROR : ', err);
+            throw err;
         }
     },
 
@@ -33,7 +110,7 @@ const lecture = {
         }
     },
 
-    /* 모든 게시글 조회  put : [ /lecture/:lid] */
+    /* 수업 정보 수정  put : [ /lecture/:lid] */
     updateLecture: async () => {
 
         try {

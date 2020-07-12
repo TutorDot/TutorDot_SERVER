@@ -15,12 +15,12 @@ router.use('/user', require('./user'));
 router.use('/lecture', require('./lecture'));
 
 // 캘린더
-router.use('/calander', require('./calander'));
+//router.use('/calander', require('./calander'));
 
 // 수업일지
-router.use('/diary', require('./diary'));
+//router.use('/diary', require('./diary'));
 
 // 알림
-router.use('/notice', require('./notice'));
+//router.use('/notice', require('./notice'));
 
 module.exports = router;

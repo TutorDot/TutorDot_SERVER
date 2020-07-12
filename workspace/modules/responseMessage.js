@@ -140,5 +140,8 @@ module.exports = {
 
     //알림 [특정 수업 알림 조회]
 
-    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공"
+    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공",
+
+    //DB ERROR
+    DB_ERROR: "데이터베이스 오류"
 };
