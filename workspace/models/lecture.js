@@ -3,8 +3,8 @@ const lectureTable = 'lecture';
 const scheduleTable = 'schedule';
 const classTable = 'class';
 const diaryTable = 'diary';
+const connectTable = 'connect';
 
-const FAIL = -1
 
 const lecture = {
 
@@ -102,6 +102,26 @@ const lecture = {
         }
     },
 
+    /* 수업 연결 */
+    createConnect: async (userIdx, lectureId) => {
+        const fields = 'user_userId, lecture_lectureId';
+        const questions = `?, ?`;
+        const values = [userIdx, lectureId];
+        const query = `INSERT INTO ${connectTable}(${fields}) VALUES(${questions})`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            const conId = result.insertId;
+            return conId
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('createClassesAuto ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('createClassesAuto ERROR : ', err);
+            throw err;
+        }
+    },
+
     /* 수업 목록 조회  get : [ /lecture ] */
     getLectureAll: async () => {
 
@@ -162,13 +182,39 @@ const lecture = {
         }
     },
 
-    /* 수업 초대  get : [ /lecture/invitation/:lid ] */
-    getCode: async () => {
-
+    /* 수업 아이디 확인 */
+    checkLid: async (lid) => {
+        const query = `SELECT * FROM ${lectureTable} WHERE lectureId="${lid}"`;
         try {
-
+            const result = await pool.queryParam(query);
+            return result.length === 0 ? false : true
         } catch (err) {
+            console.log('checkLid ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* 코드 확인 */
+    checkCode: async (code) => {
+        const query = `SELECT lectureId FROM ${lectureTable} WHERE code="${code}"`;
+        try {
+            const result = await pool.queryParam(query);
+            return result
+        } catch (err) {
+            console.log('checkLid ERROR : ', err);
+            throw err;
+        }
+    },
+
+    /* 수업 초대  get : [ /lecture/invitation/:lid ] */
+    getCodeById: async (lid) => {
+        const query = `SELECT code FROM ${lectureTable} WHERE lectureId="${lid}"`;
+        try {
+            const code = await pool.queryParam(query);
+            return code;
+        } catch (err) {
+            console.log('getCodeById ERROR : ', err);
+            throw err;
         }
     }
 }

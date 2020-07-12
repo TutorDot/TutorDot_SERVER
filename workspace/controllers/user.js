@@ -5,63 +5,85 @@ const MSG = require('../modules/responseMessage');
 const encrypt = require('../modules/crypto');
 const jwt = require('../modules/jwt');
 
+
+/* 
+    ✔️ sign up
+    METHOD : POST
+    URI : localhost:3000/user/signup
+    REQUEST BODY : userName, role, password, email
+    RESPONSE STATUS : 200 (OK)
+    RESPONSE DATA : User ID
+*/
+
 module.exports = {
     signup: async (req, res) => {
         const {
-            id,
-            name,
+            userName,
             password,
-            email
+            email,
+            role
         } = req.body;
-        if (!id || !name || !password || !email) {
+        if (!userName || !password || !email || !role) {
             res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
             return;
         }
         // 사용자 중인 아이디가 있는지 확인
-        if (await UserModel.checkUser(id)) {
+        if (await UserModel.checkUser(email)) {
             res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_ID));
             return;
         }
+
         const {
             salt,
             hashed
         } = await encrypt.encrypt(password);
-        const idx = await UserModel.signup(id, name, hashed, salt, email);
+
+        const idx = await UserModel.signup(userName, email, hashed, salt, role);
+
         if (idx === -1) {
             return res.status(CODE.DB_ERROR)
                 .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
         }
         res.status(CODE.OK)
-            .send(util.success(CODE.OK, MSG.CREATED_USER, {
-                userId: idx
-            }));
+            .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
+
+    /* 
+        ✔️ sign in
+        METHOD : POST
+        URI : localhost:3000/user/signin
+        REQUEST BODY : email, password
+        RESPONSE STATUS : 200 (OK)
+        RESPONSE DATA : User ID
+    */
     signin: async (req, res) => {
         const {
-            id,
+            email,
             password
         } = req.body;
-        if (!id || !password) {
-            res.status(CODE.BAD_REQUEST)
+
+        //request data 확인 - 없다면 NUll value 반환
+        if (!email || !password) {
+            return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
-            return;
+
         }
 
-        // User의 아이디가 있는지 확인 - 없다면 NO_USER 반납
-        const user = await UserModel.getUserById(id);
+        // User의 이메일 계정이 있는지 확인 - 없다면 NO_USER 반납
+        const user = await UserModel.getUserById(email);
         if (user[0] === undefined) {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.NO_USER));
         }
-        // req의 Password 확인 - 틀렸다면 MISS_MATCH_PW 반납
+        //req의 Password 확인 - 틀렸다면 MISS_MATCH_PW 반납
         const hashed = await encrypt.encryptWithSalt(password, user[0].salt);
         if (hashed !== user[0].password) {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.MISS_MATCH_PW));
         }
-
+        //jwt 생성
         const {
             token,
             refreshToken
@@ -71,26 +93,54 @@ module.exports = {
         res.status(CODE.OK)
             .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS, {
                 accessToken: token
-                //, refreshToken: refreshToken
             }));
     },
+    readProfile: async (req, res) => {
+
+        const userIdx = req.decoded.userId;
+
+        const dataAll = await UserModel.readProfile(userIdx);
+
+        res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.READ_PROFILE_SUCCESS,
+                dataAll
+            ));
+    },
+
     updateProfile: async (req, res) => {
         // 데이터 받아오기
-        console.log(req.file)
-        const userIdx = req.decoded.userIdx;
-        const profileImg = req.file.location;
+        const {
+            intro
+        } = req.body;
 
+        const profileImg = req.file ? req.file.location : ""
+        const userIdx = req.decoded.userId; //jwt를 decoded시켜주는것이 체크토큰을 가지고오는것
+        //const profileImg = await req.file.location;
         // data check - undefined
-        if (profileImg === undefined || !userIdx) {
+        if (!userIdx) {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
-        // image type check
-        const type = req.file.mimetype.split('/')[1];
-        if (type !== 'jpeg' && type !== 'jpg' && type !== 'png') {
-            return res.status(CODE.OK).send(util.fail(CODE.OK, MSG.UNSUPPORTED_TYPE));
+        if (req.file) {
+            // image type check
+            const type = req.file.mimetype.split('/')[1];
+            if (type !== 'jpeg' && type !== 'jpg' && type !== 'png') {
+                return res.status(CODE.OK).send(util.fail(CODE.OK, MSG.UNSUPPORTED_TYPE));
+            }
+        }
+
+        // call model - database
+        const result = await UserModel.updateProfile(userIdx, profileImg, intro);
+        res.status(CODE.OK).send(util.success(CODE.OK, MSG.UPDATE_PROFILE_SUCCESS, result));
+    },
+
+    deleteUser: async (req, res) => {
+        const userIdx = req.decoded.userId; //jwt를 decoded시켜주는것이 체크토큰을 가지고오는것
+        // data check - undefined
+        if (!userIdx) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
         // call model - database
-        const result = await UserModel.updateProfile(userIdx, profileImg);
-        res.status(CODE.OK).send(util.success(CODE.OK, MSG.UPDATE_PROFILE_SUCCESS, result));
+        const result = await UserModel.deleteUser(userIdx);
+        res.status(CODE.OK).send(util.success(CODE.OK, MSG.EXIT_SERVICE_SUCCESS));
     }
 }

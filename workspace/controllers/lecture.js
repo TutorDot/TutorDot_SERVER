@@ -3,6 +3,7 @@ const util = require('../modules/util');
 const CODE = require('../modules/statusCode');
 const MSG = require('../modules/responseMessage');
 
+
 const lecture = {
 
     // 시간 계산
@@ -71,6 +72,9 @@ const lecture = {
     /* 수업 추가  post : [ /lecture ] */
     createLecture: async (req, res) => {
 
+        const userIdx = req.decoded.userId;
+        console.log(userIdx);
+
         const {
             lectureName,
             color,
@@ -122,6 +126,16 @@ const lecture = {
             lecture.createCnDAuto(schedules, lectureId, orgLocation, totalHours)
         }
 
+        // 수업 연결
+        if (!userIdx) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        }
+        const conId = await Lecture.createConnect(userIdx, lectureId);
+        console.log(conId)
+        if (conId === -1) {
+            return res.status(CODE.DB_ERROR)
+                .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
 
         // ** 수업 방 개설 성공 **
         res.status(CODE.OK)
@@ -157,10 +171,64 @@ const lecture = {
     /* 수업방 연결  post : [ /lecture/invitation ] */
     createConnection: async (req, res) => {
 
+        const userIdx = req.decoded.userId;
+        console.log(userIdx);
+        const {
+            code
+        } = req.body;
+
+        // 코드 없음
+        if (!code) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NO_CODE));
+            return;
+        }
+
+        // 해당 수업이 없을 때
+        const result = await Lecture.checkCode(code)
+        if (result.length === 0) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NO_LECTURE_CODE));
+            return;
+        }
+        const lectureId = result[0].lectureId
+
+        // 수업 연결
+        if (!userIdx) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        }
+        const conId = await Lecture.createConnect(userIdx, lectureId);
+        console.log(conId)
+        if (conId === -1) {
+            return res.status(CODE.DB_ERROR)
+                .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
+
+        // ** 수업 방 연결 성공 **
+        res.status(CODE.OK)
+            .send(util.success(CODE.NO_CONTENT, MSG.INVITATION_CONNECT_SUCCESS));
+
+
     },
 
     /* 수업 초대  get : [ /lecture/invitation/:lid ] */
     getCode: async (req, res) => {
+
+        const {
+            lid
+        } = req.params;
+        console.log(lid)
+        const code = await Lecture.getCodeById(lid)
+        // 수업 아이디 확인
+        if (code.length === 0) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NO_LECTURE));
+            return;
+        }
+
+        // 초대 정보 불러오기 성공
+        res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.INVITATION_SUCCESS, code[0]));
 
     }
 

@@ -2,22 +2,24 @@ const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/user');
 const AuthMiddleware = require('../middlewares/auth');
-const upload = require('../modules/multer')
-const imageController = require('../controllers/image.js')
+const upload = require('../modules/multer');
+const imageController = require('../controllers/image.js');
 
+//회원가입
 router.post('/signup', UserController.signup);
+
+//로그인
 router.post('/signin', UserController.signin);
 
-/* 
-    ✔️ update profile
-    METHOD : POST
-    URI : localhost:3000/user/profile
-    REQUEST HEADER : JWT
-    REQUEST BODY : ⭐️image file ⭐️
-    RESPONSE DATA : user profile
-*/
+//간편 프로필 조회
+router.get('/profile', AuthMiddleware.checkToken, UserController.readProfile);
 
-router.post('/profile', AuthMiddleware.checkToken, upload.single('profile'), UserController.updateProfile);
-router.post('/selfies', AuthMiddleware.checkToken, upload.array('images', 4), imageController.array);
+//간편 프로필 수정
+router.put('/profile', AuthMiddleware.checkToken, upload.single('profile'), UserController.updateProfile);
 
+//서비스 탈퇴
+router.delete('/profile', AuthMiddleware.checkToken, UserController.deleteUser);
+
+// router.post('/profile', AuthMiddleware.checkToken, upload.single('profile'), UserController.updateProfile);
+// router.post('/selfies', AuthMiddleware.checkToken, upload.array('images', 1), imageController.array);
 module.exports = router;

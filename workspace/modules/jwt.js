@@ -10,8 +10,8 @@ const TOKEN_INVALID = -2;
 module.exports = {
     sign: async (user) => {
         const payload = {
-            userIdx: user.userIdx,
-            name: user.name
+            userId: user.userId,
+            name: user.userName
         };
         const result = {
             token: jwt.sign(payload, secretKey, options),
@@ -42,23 +42,23 @@ module.exports = {
     refresh: async (refreshToken) => {
         try {
             const result = jwt.verify(refreshToken, secretKey);
-            if (result.userIdx === undefined) {
+            if (result.userId === undefined) {
                 return TOKEN_INVALID;
             }
-            const user = await UserModel.getUserByIdx(result.userIdx);
+            const user = await UserModel.getUserByIdx(result.userId);
             if (refreshToken !== user[0].refreshToken) {
                 console.log('invalid refresh token');
                 return TOKEN_INVALID;
             }
             const payload = {
-                userIdx: user[0].userIdx,
-                name: user[0].name
+                userId: user[0].userId,
+                name: user[0].userName
             };
             const dto = {
                 token: jwt.sign(payload, secretKey, options),
                 refreshToken: jwt.sign(payload, secretKey, refreshOptions)
             };
-            await UserModel.updateRefreshToken(payload.userIdx, dto.refreshToken);
+            await UserModel.updateRefreshToken(payload.userId, dto.refreshToken);
             return dto;
         } catch (err) {
             console.log('jwt.js ERROR : ', err);
