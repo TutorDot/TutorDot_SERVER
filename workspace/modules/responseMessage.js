@@ -34,7 +34,7 @@ module.exports = {
 
     DELETE_USER: "회원 탈퇴 성공",
 
-    ALREADY_ID: "존재하는 ID 입니다.",
+    ALREADY_ID: "존재하는 email 입니다.",
 
 
     // 로그인
@@ -98,6 +98,10 @@ module.exports = {
 
     BAR_GRAPH_SUCCESS: "막대그래프 조회 성공",
 
+    //hwPerformance이 값이 1,2,3 제외하고 올 경우
+
+    HWPERFORMANCE_VALUE: "hwPerformance 값은 1,2,3 중에 하나이어야합니다.",
+
     //수업일지 [수업일지 수정]
 
     CHANGE_SPECIFIC_DIARY_SUCCESS: "특정 수업일지 수정 성공",
@@ -129,6 +133,10 @@ module.exports = {
     //캘린더 [특정 수업 일정 조회]
 
     READ_SPECIFIC_LECTURE_SUCCESS: "특정 수업 일정 조회 성공",
+
+    //캘린더 [일정 삭제]
+
+    DELETE_CLASS_SUCCESS: "일정 삭제 성공",
 
     //알림 [상시 알림 조회] , [자정 알림 조회]
 

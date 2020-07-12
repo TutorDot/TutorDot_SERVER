@@ -9,7 +9,7 @@ router.get('/', function (req, res, next) {
 });
 
 // 계정
-//router.use('/user', require('./user'));
+router.use('/user', require('./user'));
 
 // 수업 관리
 //router.use('/lecture', require('./lecture'));
