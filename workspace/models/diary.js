@@ -71,8 +71,7 @@ const diary = {
         }
     },
     getDiaryBar: async (userIdx, lid) => {
-        const value = 'times, hour, depositCycle, classDate';
-        const query = `SELECT ${value} FROM connect 
+        const query = `SELECT times ,SUM(hour) OVER(ORDER BY times) AS hour , depositCycle, classDate FROM connect 
         INNER JOIN lecture ON lecture.lectureId = connect.lecture_lectureId
         INNER JOIN diary ON diary.lecture_lectureId = connect.lecture_lectureId
         INNER JOIN class ON class.classId = diary.class_classId
@@ -82,7 +81,6 @@ const diary = {
             const post = await pool.queryParam(query);
             // console.log(user) 배열로 나옴
             return post;
-
         } catch (err) {
             console.log('getDairyBar ERROR : ', err);
             throw err;

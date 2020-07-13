@@ -3,6 +3,7 @@ const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 
+
 const Diary = {
 
     //전체 수업일지 조회
@@ -72,7 +73,6 @@ const Diary = {
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.CHANGE_SPECIFIC_DIARY_SUCCESS));
     },
     getDiaryBar: async (req, res) => {
-
         const userIdx = req.decoded.userId;
         const {
             lid
@@ -83,7 +83,6 @@ const Diary = {
         if (Diaries.length === 0) {
             return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_LECTURE));
         }
-
         // bar 확인 조회 성공
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.BAR_GRAPH_SUCCESS, Diaries));
     }
