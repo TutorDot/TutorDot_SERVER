@@ -44,15 +44,15 @@ const Diary = {
             hwPerformance
         } = req.body;
 
-        // if (!hwPerformance || !classProgress || !homework) {
-        //     // 게시글 수정 성공
-        //     res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.CHANGE_SPECIFIC_DIARY_SUCCESS));
-        // }
+        if (!hwPerformance || !classProgress || !homework) {
+            // 게시글 수정 성공
+            res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.CHANGE_SPECIFIC_DIARY_SUCCESS));
+        }
 
-        // //hwPerformance값이 1,2,3이 아닌 값이 올 경우
-        // if (hwPerformance !== 1 || hwPerformance !== 2 || hwPerformance !== 3) {
-        //     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.HWPERFORMANCE_VALUE));
-        // }
+        //hwPerformance값이 1,2,3이 아닌 값이 올 경우
+        if (hwPerformance !== 1 || hwPerformance !== 2 || hwPerformance !== 3) {
+            return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.HWPERFORMANCE_VALUE));
+        }
 
         // did에 해당하는 게시글이 없다면(잘못된 did값)
         const Diary = await DiaryModel.getDiaryById(did);
