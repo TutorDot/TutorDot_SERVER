@@ -6,7 +6,7 @@ const userTable = 'user';
 
 const calander = {
     getAll: async (userIdx) => {
-        const data = 'startTime, endTime, hour, times, location, classDate, connect.lecture_lectureId, lectureName, color';
+        const data = 'classId, lectureName, color, times, hour, location, classDate, startTime, endTime';
         const query = `SELECT ${data}
         FROM ${classTable}, ${connectTable}
         INNER JOIN ${lectureTable}
@@ -28,7 +28,7 @@ const calander = {
     },
 
     getLecture: async (userIdx, lectureIdx) => {
-        const data = 'startTime, endTime, hour, times, location, classDate, connect.lecture_lectureId, lectureName, color';
+        const data = 'classId, lectureName, color, times, hour, location, classDate, startTime, endTime';
         const query = `SELECT ${data}
         FROM ${classTable}, ${connectTable}
         INNER JOIN ${lectureTable}

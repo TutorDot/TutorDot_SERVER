@@ -45,7 +45,6 @@ const calander = {
                 .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
         }
 
-        console.log("1");
         //일정 생성
         const idx1 = await Calander.createClass(lectureId, date, startTime, endTime, location);
         if (idx1 === -1) {
