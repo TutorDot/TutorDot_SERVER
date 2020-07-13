@@ -45,9 +45,17 @@ const calander = {
                 .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
         }
 
+        console.log("1");
         //일정 생성
-        const idx = await Calander.createClass(lectureId, date, startTime, endTime, location);
-        if (idx === -1) {
+        const idx1 = await Calander.createClass(lectureId, date, startTime, endTime, location);
+        if (idx1 === -1) {
+            return res.status(statusCode.DB_ERROR)
+                .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //일지 생성
+        const idx2 = await Calander.createDiary(lectureId);
+        if (idx2 === -1) {
             return res.status(statusCode.DB_ERROR)
                 .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
@@ -75,10 +83,38 @@ const calander = {
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_CLASS_SUCCESS, cls));
     },
 
-    // /*일정 수정 put : [ /class/:cid ]*/
-    // putClass: async (req, res, next) => {
+    /*일정 수정 put : [ /class/:cid ]*/
+    putClass: async (req, res) => {
+        const classIdx = req.params.cid;
+        const {
+            date,
+            startTime,
+            endTime,
+            location
+        } = req.body; 
 
-    // }
+        //데이터 값이 없으면 - NULL_VALUE
+        if (!date) {
+            return res.status(statusCode.BAD_REQUEST)
+                .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+        }
+
+        let cidExists = await Calander.checkCid(classIdx);
+        if (!cidExists) {
+            return res.status(statusCode.BAD_REQUEST)
+                .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_CLASS));
+        }
+
+        //일정 수정
+        const idx = await Calander.putClass(classIdx, date, startTime, endTime, location);
+        if (idx === -1) {
+            return res.status(statusCode.DB_ERROR)
+                .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        res.status(statusCode.OK)
+            .send(util.success(statusCode.NO_CONTENT, resMessage.UPDATE_CLASS_SUCCESS));
+    },
 
     /*일정 삭제 delete : [ /class/:cid ]*/
     deleteClass: async (req, res) => {

@@ -110,6 +110,22 @@ const calander = {
         }
     },
 
+    getClassIdx: async() => {
+        const query = `SELECT MAX(classId) FROM ${classTable}`;
+
+        try {
+            const result = await pool.queryParam(query);
+            return result[0]['MAX(classId)'];
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('getClassIdx ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('getClassIdx ERROR : ', err);
+            throw err;
+        }
+    },
+
     createClass: async(lectureId, date, startTime, endTime, location) => {
         let hour = await calander.calcHour(startTime, endTime);
         let times = await calander.getLatestTimes(lectureId);
@@ -117,6 +133,7 @@ const calander = {
         const questions = `?, ?, ?, ?, ?, ?, ?`;
         const values = [startTime, endTime, location, hour, times, date, lectureId];
         const query = `INSERT INTO ${classTable}(${fields}) VALUES (${questions})`;
+
         try {
                 const result = await pool.queryParamArr(query, values);
                 // console.log(result) 객체 반환, 데이터 삽입 실패시 -1 뜨는듯
@@ -130,6 +147,32 @@ const calander = {
                 console.log('createClass ERROR : ', err);
                 throw err;
             }
+    },
+
+    createDiary: async(lectureId) => {
+        const fields = 'classProgress, homework, hwPerformance, lecture_lectureId, class_classId';
+        const questions = `?, ?, ?, ?, ?`;
+        const classProgress = "진도를 입력해주세요";
+        const homework = "숙제를 입력해주세요";
+        const hwPerformance = "";
+        let lectureIdx = lectureId;
+        let classIdx = await calander.getClassIdx();
+        const values = [classProgress, homework, hwPerformance, lectureIdx, classIdx];
+        const query = `INSERT INTO diary(${fields}) VALUES (${questions})`;
+
+        try {
+            const result = await pool.queryParamArr(query, values);
+            console.log(result) //객체 반환, 데이터 삽입 실패시 -1 뜨는듯
+            const insertId = result.insertId;
+            return insertId;
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('createDiary ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('createDiary ERROR : ', err);
+            throw err;
+        }
     },
 
     getClass: async(classIdx)=>{
@@ -150,6 +193,23 @@ const calander = {
                 return -1;
             }
             console.log('getClass ERROR : ', err);
+            throw err;
+        }
+    },
+
+    putClass: async(classIdx, date, startTime, endTime, location) => {
+        const query = `UPDATE ${classTable} 
+        SET classDate = "${date}", startTime="${startTime}", endTime="${endTime}", location="${location}" 
+        WHERE classId=${classIdx}`;
+
+        try {
+            const result = await pool.queryParam(query);
+            console.log(result); // 객체 반환, 데이터 수정 실패시 -1 뜨는듯
+            const insertId = result.insertId;
+            return insertId;
+
+        } catch (err) {
+            console.log('updateClass ERROR : ', err);
             throw err;
         }
     },
