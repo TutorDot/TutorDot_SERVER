@@ -6,13 +6,12 @@ router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'TutorDot'
   });
-});
 
 // 계정
 router.use('/user', require('./user'));
 
 // 수업 관리
-//router.use('/lecture', require('./lecture'));
+router.use('/lecture', require('./lecture'));
 
 // 캘린더
 router.use('/calander', require('./calander'));

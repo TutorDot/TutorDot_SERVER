@@ -5,6 +5,7 @@ const DB = require('../config/database');
 const UserModel = require('../models/user');
 
 module.exports = {
+
    array: async (req, res) => {
        const images = req.files;
 
