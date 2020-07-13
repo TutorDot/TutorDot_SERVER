@@ -123,22 +123,66 @@ const lecture = {
     },
 
     /* 수업 목록 조회  get : [ /lecture ] */
-    getLectureAll: async () => {
-
+    getLectureAll: async (userIdx) => {
+        const query = `SELECT lectureId, lectureName, color FROM lecture INNER JOIN connect 
+        WHERE connect.lecture_lectureId = lecture.lectureId and connect.user_userId = "${userIdx}";`
         try {
-
+            const result = await pool.queryParam(query);
+            let result2;
+            for (let res of result) {
+                // profileImg 가져오기
+                const lectureId = res.lectureId;
+                result2 = await lecture.getProfiles(lectureId, userIdx);
+                res['profileUrls'] = result2;
+            }
+            return result;
         } catch (err) {
+            console.log('getLectureNames ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* 본인 제외 프로필 가져오기 */
+    getProfiles: async (lectureId, userIdx) => {
+        const query = `SELECT profileUrl
+        FROM user as u INNER JOIN connect as c on c.user_userId = u.userId 
+        WHERE lecture_lectureId = "${lectureId}" and u.userId !="${userIdx}";`
+        try {
+            const result = await pool.queryParam(query);
+            if (!result) result = []
+            return result
+        } catch (err) {
+            console.log('getLectureNames ERROR : ', err);
+            throw err;
         }
     },
 
     /* 수업 상세 조회  get : [ /lecture/:lid ] */
-    getLectureById: async () => {
-
+    getLectureById: async (userIdx, lectureId) => {
+        const query = `SELECT lectureName, color, orgLocation, bank, accountNo, depositCycle, price, userName, role, intro, profileUrl 
+        FROM lecture as l INNER JOIN connect as c on c.lecture_lectureId = l.lectureId 
+        INNER JOIN user as u on c.user_userId = u.userId WHERE c.user_userId = ${userIdx} and l.lectureId = ${lectureId}`
         try {
-
+            const result = await pool.queryParam(query);
+            result[0]['schedules'] = await lecture.getSchedules(lectureId);
+            console.log(result[0])
+            return result[0]
         } catch (err) {
+            console.log('getLectureNames ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* 디폴트 스케쥴 가져오기 */
+    getSchedules: async (lectureId) => {
+        const query = `SELECT day, orgStartTime, orgEndTime FROM schedule WHERE lecture_lectureId = ${lectureId}`
+        try {
+            const result = await pool.queryParam(query);
+            if (!result) result = []
+            return result
+        } catch (err) {
+            console.log('getLectureNames ERROR : ', err);
+            throw err;
         }
     },
 
