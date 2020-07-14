@@ -150,14 +150,10 @@ const calander = {
     },
 
     createDiary: async(lectureId) => {
-        const fields = 'classProgress, homework, hwPerformance, lecture_lectureId, class_classId';
-        const questions = `?, ?, ?, ?, ?`;
-        const classProgress = "진도를 입력해주세요";
-        const homework = "숙제를 입력해주세요";
-        const hwPerformance = "";
-        let lectureIdx = lectureId;
+        const fields = 'classProgress, homework, lecture_lectureId, class_classId';
+        const questions = `?, ?, ?, ?`;
         let classIdx = await calander.getClassIdx();
-        const values = [classProgress, homework, hwPerformance, lectureIdx, classIdx];
+        const values = ["진도를 입력해주세요", "숙제를 입력해주세요", lectureId, classIdx];
         const query = `INSERT INTO diary(${fields}) VALUES (${questions})`;
 
         try {
