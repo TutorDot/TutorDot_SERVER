@@ -7,7 +7,6 @@ router.get('/', function (req, res, next) {
     title: 'TutorDot'
   });
 });
-
 // 계정
 router.use('/user', require('./user'));
 
