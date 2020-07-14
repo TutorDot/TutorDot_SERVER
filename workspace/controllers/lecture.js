@@ -12,8 +12,15 @@ const lecture = {
         return int_endTime - int_startTime;
     },
 
+    DateToFormattedString: async (d) => {
+        var yyyy = d.getFullYear().toString();
+        var mm = (d.getMonth() + 1).toString(); // getMonth() is zero-based         
+        var dd = d.getDate().toString();
+        return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
+    },
+
     // class 디비에 일정 자동 추가
-    createCnDAuto: async (schedules, lectureId, orgLocation, totalHours) => {
+    createCnDAuto: async (doneTimes, count, schedules, lectureId, orgLocation, totalHours) => {
         let timeTable = {};
         for (let schedule of schedules) {
             const {
@@ -26,16 +33,20 @@ const lecture = {
         //console.log(timeTable);
 
         const week = ["일", "월", "화", "수", "목", "금", "토"];
-        const today = new Date();
-
-        let cnt = 0;
-        let curDate = new Date(today);
-        let curDay = week[new Date(curDate).getDay()];
-        let times = 1;
+        let cnt = count;
+        let curDate = new Date()
+        console.log('wwww', new Date().toString())
+        // curDate.setHours(curDate.getHours() + 9)
+        let index = curDate.getDay()
+        let curDay = week[index];
+        let times = doneTimes + 1;
         while (cnt < totalHours) {
             //console.log(cnt)
+            console.log('c', curDate, curDay)
             // 현재 요일과 입력 요일이 같다면
             if (Object.keys(timeTable).includes(curDay)) {
+                let date = await lecture.DateToFormattedString(curDate)
+                console.log(cnt, totalHours)
                 // 시간 계산
                 const hour = await lecture.calcHour(timeTable[curDay][0], timeTable[curDay][1]);
                 //console.log(hour)
@@ -48,7 +59,7 @@ const lecture = {
                     hour,
                     times,
                     orgLocation,
-                    curDate.toISOString().slice(0, 10),
+                    date,
                     lectureId
                 );
                 if (classId === -1) {
@@ -67,14 +78,13 @@ const lecture = {
 
             // 다음 날 탐색
             curDate.setDate(curDate.getDate() + 1);
-            curDay = week[new Date(curDate).getDay()];
+            curDay = week[curDate.getDay()];
         }
     },
 
     /* 수업 추가  post : [ /lecture ] */
     createLecture: async (req, res) => {
         const userIdx = req.decoded.userId;
-
         const {
             lectureName,
             color,
@@ -127,7 +137,7 @@ const lecture = {
 
         // 디폴트 스케줄 있을 때 class 디비에 일정 자동 추가
         if (schedules.length !== 0) {
-            lecture.createCnDAuto(schedules, lectureId, orgLocation, totalHours);
+            lecture.createCnDAuto(0, 0, schedules, lectureId, orgLocation, totalHours);
         }
 
         // 수업 연결
@@ -164,53 +174,112 @@ const lecture = {
         if (!userIdx) {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
+        // 해당 수업 없음
         const result = await Lecture.getLectureById(userIdx, lid)
+        if (result.length === 0) {
+            return res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.NO_LECTURE));
+        }
         // 수업 상세 조회 성공
         res.status(CODE.OK)
             .send(util.success(CODE.OK, MSG.CHECK_SPECIFIC_LECTURE_LIST_SUCCESS, result));
+
     },
 
     /* 모든 게시글 조회  put : [ /lecture/:lid] */
     updateLecture: async (req, res) => {
-        // const userIdx = req.decoded.userId;
-        // const {
-        //     lid
-        // } = req.params;
-        // const {
-        //     lectureName,
-        //     color,
-        //     schedules,
-        //     orgLocation,
-        //     bank,
-        //     accountNumber,
-        //     totalHours,
-        //     price
-        // } = req.body;
-        // // 데이터 값이 없으면 - NULL_VALUE
-        // if (!lectureName || !totalHours || !price) {
-        //     res.status(CODE.BAD_REQUEST)
-        //         .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
-        //     return;
-        // }
-        // // id에 해당하는 게시글이 없다면
-        // const post = await Post.getPostById(id)
-        // if (post.length === 0) {
-        //     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_POST_IDX));
-        // }
-        // const idx = await Post.update(id, title, content)
-        // // 수정 실패
-        // if (idx === -1) {
-        //     return res.status(statusCode.DB_ERROR)
-        //         .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
-        // }
-        // // 수정된 게시글 불러오기
-        // const newPost = await Post.getPostById(id);
-        // if (post.length === 0) {
-        //     return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_POST_IDX));
-        // }
-        // // 게시글 수정 성공
-        // res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.UPDATE_POST, newPost[0]))
+        const userIdx = req.decoded.userId;
+        const {
+            lid
+        } = req.params;
+        const {
+            lectureName,
+            color,
+            schedules,
+            orgLocation,
+            bank,
+            accountNumber,
+            totalHours,
+            price
+        } = req.body;
+        // 데이터 값이 없으면 - NULL_VALUE
+        if (!lectureName || !totalHours || !price) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+            return;
+        }
+        // 해당 수업 없음
+        if (!await Lecture.getLectureById(userIdx, lid)) {
+            return res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.NO_LECTURE));
+        }
+
+        // 수업 수정
+        const updateId = await Lecture.updateLecture(
+            lid,
+            lectureName,
+            color,
+            orgLocation,
+            bank,
+            accountNumber,
+            totalHours,
+            price
+        );
+        if (updateId === -1) {
+            return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
+        console.log('수업 수정 성공')
+
+        // 이전 스케줄 삭제
+        const isDeleted = await Lecture.deleteSchedules(lid);
+        if (isDeleted === -1) {
+            return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
+        console.log('이전 스케줄 삭제 성공')
+
+        // 수업 스케줄 셋팅 자동 추가
+        for (let schedule of schedules) {
+            const {
+                day,
+                orgStartTime,
+                orgEndTime
+            } = schedule;
+            const scheduleId = await Lecture.setSchedule(day, orgStartTime, orgEndTime, lid);
+            if (scheduleId === -1) {
+                return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+            }
+        }
+        console.log('새로운 스케줄로 수정 성공')
+
+        // 오늘 이전 스케쥴 시간 받아오기
+        const todayDate = new Date()
+        todayDate.setHours(todayDate.getHours() + 9)
+        const todayDateString = todayDate.toISOString().slice(0, 10)
+        console.log(todayDateString)
+        const result = await Lecture.getSoFar(todayDateString, lid)
+        console.log(result)
+
+        const doneTimes = result[0]['count(hour)'] || 0
+        const doneHours = result[0]['sum(hour)'] || 0
+        console.log(doneTimes, doneHours)
+
+        // 오늘 이후 스케쥴 삭제
+        if (doneTimes !== 0) {
+            const deleteId = await Lecture.deleteSoFar(todayDateString, lid)
+            if (deleteId === -1) {
+                return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+            }
+        }
+        console.log('오늘 이후 스케쥴 삭제 성공')
+
+        // 디폴트 스케줄 있을 때 class 디비에 일정 자동 수정
+        if (schedules.length !== 0) {
+            lecture.createCnDAuto(doneTimes, doneHours, schedules, lid, orgLocation, totalHours);
+        }
+        console.log('오늘 이후 스케쥴 삭제 성공')
+
+        // ** 수업 정보 변경 성공 **
+        res.status(CODE.OK).send(util.success(CODE.NO_CONTENT, MSG.CHANGE_LECTURE_SUCCESS));
     },
+
 
     /* 토글 수업목록 조회  get : [ /toggle ] */
     getLectureNames: async (req, res) => {
