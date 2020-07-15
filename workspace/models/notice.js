@@ -28,7 +28,7 @@ const notice = {
         const query = `SELECT ${value} FROM notice
         INNER JOIN lecture ON notice.lecture_lectureId = lecture.lectureId
         INNER JOIN connect ON notice.lecture_lectureId = connect.lecture_lectureId
-        WHERE connect.user_userId = ${userIdx} AND notice.lecture_lectureId = ${lid}`;
+        WHERE connect.user_userId = ${userIdx} AND notice.lecture_lectureId = ${lid} AND noticeType = 2`;
 
         try {
             const result = await pool.queryParam(query);
