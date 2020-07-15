@@ -34,6 +34,18 @@ const Notice = {
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.READ_SPECIFIC_ALARM_SUCCESS, Notices));
     }
+
+    // checkTomorrow: async(res, req) => {
+    //     const today = new Date();
+    //     const isTomorrow = await Notice.isTomorrow(today.toString().slice(0, 9));
+    //     if(isTomorrow){
+    //         Notice.insertNotice();
+    //         const classInfo = await Notice.getClassTomorrow();
+
+    //         res.status(statusCode.OK)
+    //         .send(util.success(statusCode.NO_CONTENT, resMessage.FETCH_NEW_ALARM, classInfo));
+    //     }
+    // }
 }
 
 module.exports = Notice;
