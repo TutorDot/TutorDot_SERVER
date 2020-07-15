@@ -10,7 +10,7 @@ router.post('/', AuthUtil.checkToken, lectureController.createLecture);
 /* 수업 목록 조회  get : [ /lecture ] */
 router.get('/', AuthUtil.checkToken, lectureController.getLectureAll);
 
-/* 수업 목록 조회  get : [ /lecture/name ] */
+/* 수업 토글 목록 조회  get : [ /lecture/name ] */
 router.get('/name', AuthUtil.checkToken, lectureController.getLectureNames);
 
 /* 수업 상세 조회  get : [ /lecture/:lid ] */
