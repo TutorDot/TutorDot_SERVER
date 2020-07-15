@@ -76,9 +76,7 @@ const user = {
         try {
             const result = await pool.queryParam(query);
             console.log(result) // 객체 반환, 데이터 삭제 실패시 -1 뜨는듯
-            const insertId = result.insertId;
-            return insertId;
-
+            return result;
         } catch (err) {
             console.log('deleteUser ERROR : ', err);
             throw err;

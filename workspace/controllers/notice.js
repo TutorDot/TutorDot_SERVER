@@ -33,6 +33,24 @@ const Notice = {
         //특정 수업 알림 조회 성공
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.READ_SPECIFIC_ALARM_SUCCESS, Notices));
+    },
+
+    //내일 수업료를 입금해주세요.
+    getPayment: async (req, res, next) => {
+        const userIdx = req.decoded.userId;
+        const {
+            lid
+        } = req.params;
+
+        const TimesMax = await NoticeModel.getTimesMax(userIdx, lid);
+
+
+        if (TimesMax.length !== 0) {
+            const payment = await NoticeModel.getPayment(userIdx);
+            //내일 수업료를 입금해주세요 성공
+            res.status(statusCode.OK)
+                .send(util.success(statusCode.OK, resMessage.FETCH_NEW_ALARM, payment));
+        }
     }
 
     // checkTomorrow: async(res, req) => {
