@@ -130,7 +130,7 @@ module.exports = {
 
         // call model - database
         const result = await UserModel.updateProfile(userIdx, profileImg, intro);
-        res.status(CODE.OK).send(util.success(CODE.OK, MSG.UPDATE_PROFILE_SUCCESS, result));
+        res.status(CODE.OK).send(util.success(CODE.OK, MSG.CHANGE_PROFILE_SUCCESS, result));
     },
 
     deleteUser: async (req, res) => {

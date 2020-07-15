@@ -63,7 +63,7 @@ const user = {
         try {
             await pool.queryParam(query);
             //catch문이 실행 안되었다면 query문과 result을 리턴하여라
-            query = `SELECT userName, email, role, intro, profileUrl FROM ${table} WHERE userId="${userIdx}"`;
+            query = `SELECT userName, role, intro, profileUrl FROM ${table} WHERE userId="${userIdx}"`;
             const result = await pool.queryParam(query);
             return result;
         } catch (err) {
