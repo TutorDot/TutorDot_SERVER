@@ -94,10 +94,10 @@ const lecture = {
             return diaryId
         } catch (err) {
             if (err.errno == 1062) {
-                console.log('createClassesAuto ERROR : ', err.errno, err.code);
+                console.log('createDiaryAuto ERROR : ', err.errno, err.code);
                 return -1;
             }
-            console.log('createClassesAuto ERROR : ', err);
+            console.log('createDiaryAuto ERROR : ', err);
             throw err;
         }
     },
@@ -114,10 +114,10 @@ const lecture = {
             return conId
         } catch (err) {
             if (err.errno == 1062) {
-                console.log('createClassesAuto ERROR : ', err.errno, err.code);
+                console.log('createConnect ERROR : ', err.errno, err.code);
                 return -1;
             }
-            console.log('createClassesAuto ERROR : ', err);
+            console.log('createConnect ERROR : ', err);
             throw err;
         }
     },
@@ -137,7 +137,7 @@ const lecture = {
             }
             return result;
         } catch (err) {
-            console.log('getLectureNames ERROR : ', err);
+            console.log('getLectureAll ERROR : ', err);
             throw err;
         }
     },
@@ -152,7 +152,7 @@ const lecture = {
             if (!result) result = []
             return result
         } catch (err) {
-            console.log('getLectureNames ERROR : ', err);
+            console.log('getProfiles ERROR : ', err);
             throw err;
         }
     },
@@ -168,7 +168,7 @@ const lecture = {
             console.log(result[0])
             return result[0]
         } catch (err) {
-            console.log('getLectureNames ERROR : ', err);
+            console.log('getLectureById ERROR : ', err);
             throw err;
         }
     },
@@ -181,18 +181,63 @@ const lecture = {
             if (!result) result = []
             return result
         } catch (err) {
-            console.log('getLectureNames ERROR : ', err);
+            console.log('getSchedules ERROR : ', err);
             throw err;
         }
     },
 
     /* 수업 정보 수정  put : [ /lecture/:lid] */
-    updateLecture: async () => {
-
+    updateLecture: async (lid, lectureName, color, orgLocation, bank, accountNumber, totalHours, price) => {
+        const query = `UPDATE ${lectureTable} SET lectureName = "${lectureName}", color = "${color}", orgLocation="${orgLocation}", bank="${bank}", accountNo="${accountNumber}", depositCycle="${totalHours}", price="${price}" WHERE lectureId ="${lid}"`;
         try {
+            const result = await pool.queryParam(query);
+            const lectureId = result.insertId;
+            return lectureId
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('updateLecture ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('updateLecture ERROR : ', err);
+            throw err;
+        }
+    },
+
+    /* 이전 스케쥴 삭제 */
+    deleteSchedules: async (lectureId) => {
+        const query = `DELETE FROM ${scheduleTable} WHERE lecture_lectureId="${lectureId}"`;
+        try {
+            const result = await pool.queryParam(query);
+            const insertId = result.insertId;
+            return insertId;
 
         } catch (err) {
+            console.log('delete ERROR : ', err);
+            throw err;
+        }
+    },
 
+    /* 오늘 이전 스케쥴 시간, 회차 받아오기 */
+    getSoFar: async (todayDate, lectureId) => {
+        const query = `SELECT count(hour), sum(hour) FROM ${classTable} where classDate < "${todayDate}" and lecture_lectureId = "${lectureId}";`
+        try {
+            const result = await pool.queryParam(query);
+            return result
+        } catch (err) {
+            console.log('getSchedules ERROR : ', err);
+            throw err;
+        }
+    },
+    deleteSoFar: async (todayDate, lectureId) => {
+        const query = `DELETE FROM ${classTable} where classDate >= "${todayDate}" and lecture_lectureId = "${lectureId}"`;
+        try {
+            const result = await pool.queryParam(query);
+            const insertId = result.insertId;
+            return insertId;
+
+        } catch (err) {
+            console.log('delete ERROR : ', err);
+            throw err;
         }
     },
 
@@ -256,7 +301,7 @@ const lecture = {
             const result = await pool.queryParam(query);
             return result
         } catch (err) {
-            console.log('checkLid ERROR : ', err);
+            console.log('checkCode ERROR : ', err);
             throw err;
         }
     },
