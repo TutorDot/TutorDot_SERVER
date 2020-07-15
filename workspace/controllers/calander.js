@@ -79,7 +79,7 @@ const calander = {
                 .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_CLASS));
         }
 
-        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_CLASS_SUCCESS, cls));
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.READ_CLASS_SUCCESS, cls[0]));
     },
 
     /*일정 수정 put : [ /class/:cid ]*/
