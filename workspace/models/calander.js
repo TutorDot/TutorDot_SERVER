@@ -2,15 +2,15 @@ const pool = require('../modules/pool');
 const classTable = 'class';
 const lectureTable = 'lecture';
 const connectTable = 'connect';
-const userTable = 'user';
+
 
 const calander = {
     getAll: async (userIdx) => {
-        const data = 'classId, lectureName, color, times, hour, location, classDate, startTime, endTime';
+        const data = 'classId, lecture.lectureName, color, times, hour, location, classDate, startTime, endTime';
         const query = `SELECT ${data}
-        FROM ${classTable}, ${connectTable}
-        INNER JOIN ${lectureTable}
-        ON lecture_lectureId = lectureId
+        FROM ${classTable}
+        JOIN ${lectureTable} ON ${classTable}.lecture_lectureId = ${lectureTable}.lectureId
+        JOIN ${connectTable} ON ${lectureTable}.lectureId = ${connectTable}.lecture_lectureId 
         WHERE ${connectTable}.user_userId=${userIdx};`;
 
         try {
@@ -28,11 +28,11 @@ const calander = {
     },
 
     getLecture: async (userIdx, lectureIdx) => {
-        const data = 'classId, lectureName, color, times, hour, location, classDate, startTime, endTime';
+        const data = 'classId, lecture.lectureName, color, times, hour, location, classDate, startTime, endTime';
         const query = `SELECT ${data}
-        FROM ${classTable}, ${connectTable}
-        INNER JOIN ${lectureTable}
-        ON lecture_lectureId = lectureId
+        FROM ${classTable}
+        JOIN ${lectureTable} ON ${classTable}.lecture_lectureId = ${lectureTable}.lectureId
+        JOIN ${connectTable} ON ${lectureTable}.lectureId = ${connectTable}.lecture_lectureId 
         WHERE ${connectTable}.user_userId=${userIdx} AND ${connectTable}.lecture_lectureId = ${lectureIdx};`;
 
         try {
