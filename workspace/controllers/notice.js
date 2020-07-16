@@ -2,10 +2,8 @@ const NoticeModel = require('../models/notice');
 const util = require('../modules/util');
 const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
-const notice = require('../models/notice');
 
 const Notice = {
-
     //전체 수업알림 조회
     getAll: async (req, res, next) => {
         const userIdx = req.decoded.userId;
@@ -13,6 +11,7 @@ const Notice = {
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.READ_TOTAL_ALARM_SUCCESS, Notices));
     },
+    
     //특정 수업알림 조회
     getNoticeId: async (req, res, next) => {
         const userIdx = req.decoded.userId;
@@ -33,37 +32,7 @@ const Notice = {
         //특정 수업 알림 조회 성공
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.READ_SPECIFIC_ALARM_SUCCESS, Notices));
-    },
-
-    //내일 수업료를 입금해주세요.
-    getPayment: async (req, res, next) => {
-        const userIdx = req.decoded.userId;
-        const {
-            lid
-        } = req.params;
-
-        const TimesMax = await NoticeModel.getTimesMax(userIdx, lid);
-
-
-        if (TimesMax.length !== 0) {
-            const payment = await NoticeModel.getPayment(userIdx);
-            //내일 수업료를 입금해주세요 성공
-            res.status(statusCode.OK)
-                .send(util.success(statusCode.OK, resMessage.FETCH_NEW_ALARM, payment));
-        }
     }
-
-    // checkTomorrow: async(res, req) => {
-    //     const today = new Date();
-    //     const isTomorrow = await Notice.isTomorrow(today.toString().slice(0, 9));
-    //     if(isTomorrow){
-    //         Notice.insertNotice();
-    //         const classInfo = await Notice.getClassTomorrow();
-
-    //         res.status(statusCode.OK)
-    //         .send(util.success(statusCode.NO_CONTENT, resMessage.FETCH_NEW_ALARM, classInfo));
-    //     }
-    // }
 }
 
 module.exports = Notice;
