@@ -28,6 +28,9 @@
 #### 📷 뷰별 api 명세서 [화면과 함께 설명 .pdf] - 화면별 뷰캡쳐
 [👀 파일 다운로드](https://drive.google.com/file/d/1Zxlv2JgsUoj22IsQl2P9Y8PxnCa1Rx8E/view?usp=sharing)
 
+#### 🧚‍♀️ Postman Runner [화면과 함께 설명 .pdf] – 실행 후 캡쳐
+[👀 파일 다운로드](https://drive.google.com/file/d/1m-IA_PyuAVUil-HjWfEUOc1R4ErD0YOr/view?usp=sharing)
+
 ### 📦 ERD ✔️
 ![ERDERDERD](https://user-images.githubusercontent.com/53335160/86786445-f9691280-c09e-11ea-8dd2-e958437bfde9.png)
 
