@@ -4,9 +4,11 @@ module.exports = {
 
     OUT_OF_VALUE: "파라미터 값이 잘못되었습니다",
 
-    TOKEN_NULL_VALUE: "토큰 값이 없습니다.",
+    EMPTY_TOKEN: "토큰 값이 없습니다.",
 
-    TOKEN_NOT_VALID_VALUE: "토큰이 유효하지 않습니다.",
+    EXPIRED_TOKEN: "토큰이 만료되었습니다",
+
+    INVALID_TOKEN: "토큰이 유효하지 않습니다.",
 
     LID_NULL_VALUE: "lid값이 없습니다.",
 
@@ -34,7 +36,7 @@ module.exports = {
 
     DELETE_USER: "회원 탈퇴 성공",
 
-    ALREADY_ID: "존재하는 ID 입니다.",
+    ALREADY_ID: "존재하는 email 입니다.",
 
 
     // 로그인
@@ -98,6 +100,10 @@ module.exports = {
 
     BAR_GRAPH_SUCCESS: "막대그래프 조회 성공",
 
+    //hwPerformance이 값이 1,2,3 제외하고 올 경우
+
+    HWPERFORMANCE_VALUE: "hwPerformance 값은 1,2,3 중에 하나이어야합니다.",
+
     //수업일지 [수업일지 수정]
 
     CHANGE_SPECIFIC_DIARY_SUCCESS: "특정 수업일지 수정 성공",
@@ -130,6 +136,10 @@ module.exports = {
 
     READ_SPECIFIC_LECTURE_SUCCESS: "특정 수업 일정 조회 성공",
 
+    //캘린더 [일정 삭제]
+
+    DELETE_CLASS_SUCCESS: "일정 삭제 성공",
+
     //알림 [상시 알림 조회] , [자정 알림 조회]
 
     FETCH_NEW_ALARM: "새로운 알림 불러오기",
@@ -140,5 +150,8 @@ module.exports = {
 
     //알림 [특정 수업 알림 조회]
 
-    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공"
+    READ_SPECIFIC_ALARM_SUCCESS: "특정 알림 조회 성공",
+
+    //DB ERROR
+    DB_ERROR: "데이터베이스 오류"
 };
