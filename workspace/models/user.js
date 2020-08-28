@@ -48,6 +48,17 @@ const user = {
             throw err;
         }
     },
+
+    getUserByRole: async (email) => {
+        const query = `SELECT role FROM ${table} WHERE email="${email}"`;
+        try {
+            return await pool.queryParam(query);
+        } catch (err) {
+            console.log('getUserById ERROR : ', err);
+            throw err;
+        }
+    },
+
     readProfile: async (userIdx) => {
         const query = `SELECT userName, role, intro, profileUrl FROM ${table} WHERE userId="${userIdx}"`;
         try {

@@ -68,7 +68,6 @@ module.exports = {
         if (!email || !password) {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
-
         }
 
         // User의 이메일 계정이 있는지 확인 - 없다면 NO_USER 반납
@@ -83,17 +82,22 @@ module.exports = {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.MISS_MATCH_PW));
         }
+        const 
+            role 
+         = await UserModel.getUserByRole(email);
         //jwt 생성
         const {
-            token,
-            refreshToken
-        } = await jwt.sign(user[0]);
+            token
+    }
+         = await jwt.sign(user[0]);
 
         // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
-        res.status(CODE.OK)
-            .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS, {
-                accessToken: token
-            }));
+            res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS,{
+                accessToken:token,
+                role:role[0]
+            }
+            ));
     },
     readProfile: async (req, res) => {
 
