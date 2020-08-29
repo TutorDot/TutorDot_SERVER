@@ -95,7 +95,7 @@ module.exports = {
             res.status(CODE.OK)
             .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS,{
                 accessToken:token,
-                role:role[0]
+                role:role[0].role
             }
             ));
     },
