@@ -250,6 +250,7 @@ const lecture = {
 
         // 오늘 이전 스케쥴 시간 받아오기
         const todayDate = new Date()
+        // 9 더하는 부분 검토해야함
         todayDate.setHours(todayDate.getHours() + 9)
         const todayDateString = todayDate.toISOString().slice(0, 10)
         //console.log(todayDateString)
