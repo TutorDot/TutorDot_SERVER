@@ -274,7 +274,7 @@ const lecture = {
         if (schedules.length !== 0) {
             lecture.createCnDAuto(doneTimes, doneHours, schedules, lid, orgLocation, totalHours);
         }
-        //console.log('오늘 이후 스케쥴 삭제 성공')
+        //console.log('오늘 이후 스케쥴 자동 재셋팅 성공')
 
         // ** 수업 정보 변경 성공 **
         res.status(CODE.OK).send(util.success(CODE.NO_CONTENT, MSG.CHANGE_LECTURE_SUCCESS));
