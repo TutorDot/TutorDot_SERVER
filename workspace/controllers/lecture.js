@@ -184,7 +184,7 @@ const lecture = {
 
     },
 
-    /* 모든 게시글 조회  put : [ /lecture/:lid] */
+    /* 수업 수정  put : [ /lecture/:lid] */
     updateLecture: async (req, res) => {
         const userIdx = req.decoded.userId;
         const {
