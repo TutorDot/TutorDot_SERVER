@@ -18,6 +18,20 @@ const user = {
             throw err;
         }
     },
+    signuprole: async (email, role) =>{
+        const query = `UPDATE ${table} SET role="${role}" WHERE email ="${email}"`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            //console.log(result)
+            const insertId = result.insertId;
+            //console.log(insertId);
+            return insertId;
+        } catch (err) {
+            console.log('signuprole ERROR : ', err);
+            throw err;
+        }
+    },
+
     checkUser: async (email) => {
         const query = `SELECT * FROM ${table} WHERE email="${email}"`;
         try {
@@ -55,6 +69,16 @@ const user = {
             return await pool.queryParam(query);
         } catch (err) {
             console.log('getUserById ERROR : ', err);
+            throw err;
+        }
+    },
+    
+    getUserByNaverRole: async (socialId) => {
+        const query = `SELECT role FROM ${table} WHERE email="${socialId}"`;
+        try {
+            return await pool.queryParam(query);
+        } catch (err) {
+            console.log('getUserByNaverRole ERROR : ', err);
             throw err;
         }
     },

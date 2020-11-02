@@ -12,7 +12,8 @@ const calander = {
         res.status(statusCode.OK)
             .send(util.success(statusCode.OK, resMessage.READ_TOTAL_LECTURE_SUCCESS, classes));
     },
-
+    
+    
     /*특정 수업 일정 조회 get : [ /:lid ]*/
     getLecture: async (req, res) => {
         const userIdx = req.decoded.userId; 

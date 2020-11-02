@@ -50,6 +50,27 @@ module.exports = {
             .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
 
+            /*소셜로그인 get : [ / ]*/
+            socialGetAll: async (req, res) => {
+                const email = await UserModel.getUserById(email);
+                const role = req.params.role;
+                const rolechange = await UserModel.signup(role,email);
+
+                if (!email || !role) {
+                    res.status(CODE.BAD_REQUEST)
+                        .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+                    return;
+                }
+                // 사용자 중인 아이디가 있는지 확인
+                if (await UserModel.checkUser(email)) {
+                    res.status(CODE.BAD_REQUEST)
+                        .send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_ID));
+                    return;
+                }
+                // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
+            res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.LOGIN_SUCCES, rolechange));
+    },
     /* 
         ✔️ sign in
         METHOD : POST
@@ -84,12 +105,12 @@ module.exports = {
         }
         const 
             role 
-         = await UserModel.getUserByRole(email);
+        = await UserModel.getUserByRole(email);
         //jwt 생성
         const {
-            token
-    }
-         = await jwt.sign(user[0]);
+            token,
+            refreshToken}
+        = await jwt.sign(user[0]);
 
         // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
             res.status(CODE.OK)
@@ -147,4 +168,6 @@ module.exports = {
         const result = await UserModel.deleteUser(userIdx);
         res.status(CODE.OK).send(util.success(CODE.OK, MSG.EXIT_SERVICE_SUCCESS));
     }
+
+
 }
