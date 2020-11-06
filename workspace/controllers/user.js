@@ -50,11 +50,11 @@ module.exports = {
             .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
 
-            /*소셜로그인 get : [ / ]*/
+            /*소셜로그인 역할까지 수정한 후 네이버 소셜 로그인 완료하기*/
             socialGetAll: async (req, res) => {
-                const email = await UserModel.getUserById(email);
-                const role = req.params.role;
-                const rolechange = await UserModel.signup(role,email);
+                const role = req.body;
+                const email = req.body;
+                const rolechange = await UserModel.updateRole(email, role);
 
                 if (!email || !role) {
                     res.status(CODE.BAD_REQUEST)
@@ -69,7 +69,7 @@ module.exports = {
                 }
                 // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
             res.status(CODE.OK)
-            .send(util.success(CODE.OK, MSG.LOGIN_SUCCES, rolechange));
+            .send(util.success(CODE.OK, MSG.LOGIN_SUCCES, rolechange[0]));
     },
     /* 
         ✔️ sign in

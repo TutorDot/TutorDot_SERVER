@@ -5,8 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 let passport = require('passport');
 var indexRouter = require('./routes/index');
+const session = require("express-session");
 
-var app = express();
+const app = express();
 
 //social login
 app.use(passport.initialize());

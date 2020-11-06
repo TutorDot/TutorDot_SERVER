@@ -6,7 +6,6 @@ const AuthMiddleware = require('../middlewares/auth');
 /*전체 수업 일정 조회 get : [ / ]*/
 router.get('/', AuthMiddleware.checkToken, calanderController.getAll);
 
-
 /*특정 수업 일정 조회 get : [ /:lid ]*/
 router.get('/:lid', AuthMiddleware.checkToken, calanderController.getLecture);
 

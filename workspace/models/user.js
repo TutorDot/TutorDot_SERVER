@@ -106,6 +106,22 @@ const user = {
             throw err;
         }
     },
+
+    // 이메일로 role 수정
+    updateRole: async (email, role) => {
+        let query = `UPDATE ${table} SET role="${role}" WHERE email="${email}"`;
+        try {
+            await pool.queryParam(query);
+            //catch문이 실행 안되었다면 query문과 result을 리턴하여라
+            query = `SELECT * FROM ${table} WHERE email="${email}"`;
+            const result = await pool.queryParam(query);
+            return result;
+        } catch (err) {
+            console.log('update profile ERROR : ', err);
+            throw err;
+        }
+    },
+
     deleteUser: async (idx) => {
         const query = `DELETE FROM ${table} WHERE userId="${idx}"`;
         try {
