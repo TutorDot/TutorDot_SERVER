@@ -24,4 +24,7 @@ router.use("/diary", require("./diary"));
 // 알림
 router.use("/notice", require("./notice"));
 
+//소셜로그인
+router.use("/login",require("./login.js"));
+
 module.exports = router;
