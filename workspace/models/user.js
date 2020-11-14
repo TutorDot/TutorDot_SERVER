@@ -18,6 +18,20 @@ const user = {
             throw err;
         }
     },
+    signuprole: async (email, role) =>{
+        const query = `UPDATE ${table} SET role="${role}" WHERE email ="${email}"`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            //console.log(result)
+            const insertId = result.insertId;
+            //console.log(insertId);
+            return insertId;
+        } catch (err) {
+            console.log('signuprole ERROR : ', err);
+            throw err;
+        }
+    },
+
     checkUser: async (email) => {
         const query = `SELECT * FROM ${table} WHERE email="${email}"`;
         try {
@@ -48,6 +62,27 @@ const user = {
             throw err;
         }
     },
+
+    getUserByRole: async (email) => {
+        const query = `SELECT role FROM ${table} WHERE email="${email}"`;
+        try {
+            return await pool.queryParam(query);
+        } catch (err) {
+            console.log('getUserById ERROR : ', err);
+            throw err;
+        }
+    },
+    
+    getUserByNaverRole: async (socialId) => {
+        const query = `SELECT role FROM ${table} WHERE email="${socialId}"`;
+        try {
+            return await pool.queryParam(query);
+        } catch (err) {
+            console.log('getUserByNaverRole ERROR : ', err);
+            throw err;
+        }
+    },
+
     readProfile: async (userIdx) => {
         const query = `SELECT userName, role, intro, profileUrl FROM ${table} WHERE userId="${userIdx}"`;
         try {
@@ -71,6 +106,22 @@ const user = {
             throw err;
         }
     },
+
+    // 이메일로 role 수정
+    updateRole: async (email, role) => {
+        let query = `UPDATE ${table} SET role="${role}" WHERE email="${email}"`;
+        try {
+            await pool.queryParam(query);
+            //catch문이 실행 안되었다면 query문과 result을 리턴하여라
+            query = `SELECT * FROM ${table} WHERE email="${email}"`;
+            const result = await pool.queryParam(query);
+            return result;
+        } catch (err) {
+            console.log('update profile ERROR : ', err);
+            throw err;
+        }
+    },
+
     deleteUser: async (idx) => {
         const query = `DELETE FROM ${table} WHERE userId="${idx}"`;
         try {

@@ -3,10 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+let passport = require('passport');
 var indexRouter = require('./routes/index');
+const session = require("express-session");
+const cors = require('cors');
 
-var app = express();
+const app = express();
+
+//social login
+app.use(passport.initialize());
+app.use(passport.session());
+
+// cors
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

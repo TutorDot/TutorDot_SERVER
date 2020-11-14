@@ -23,19 +23,22 @@
 [👀 튜터닷 api 명세서 Wiki링크](https://github.com/TutorDot/TutorDot_SERVER/wiki)
 
 #### 스프레드 시트버전
-![image](https://user-images.githubusercontent.com/22907830/86925418-d5273780-c16b-11ea-9d7d-9e1f1768f61e.png)
+![image](https://user-images.githubusercontent.com/22907830/87694883-b529f080-c7c9-11ea-86ca-452c3e8d7e24.png)
 
 #### 📷 뷰별 api 명세서 [화면과 함께 설명 .pdf] - 화면별 뷰캡쳐
 [👀 파일 다운로드](https://drive.google.com/file/d/1Zxlv2JgsUoj22IsQl2P9Y8PxnCa1Rx8E/view?usp=sharing)
+
+#### 🧚‍♀️ Postman Runner [화면과 함께 설명 .pdf] – 실행 후 캡쳐
+[👀 파일 다운로드](https://drive.google.com/file/d/1m-IA_PyuAVUil-HjWfEUOc1R4ErD0YOr/view?usp=sharing)
 
 ### 📦 ERD ✔️
 ![ERDERDERD](https://user-images.githubusercontent.com/53335160/86786445-f9691280-c09e-11ea-8dd2-e958437bfde9.png)
 
 ### 👭🏼 역할분담 ✔️
-- all : **기능 명세서 정리**, **테이블 초기 셋팅(변수이름 서)**, 보일러플레이트 작성, Dependencies Module작성, api에 해당하는 뷰캡쳐, 코드작성(notice.js)
-- 서영 🧞‍♂️ : **api 명세서 스프레드시트 정리**, **api 명세서 wiki(lecture.js, notice.js)**, **SQL연결**, ERD 검토, 코드작성(lecture.js), Bucket연결, EC2연결
-- 세희 🧞‍♀️ : **api 명세서 wiki(user.js, diary.js, notice.js)**, ERD 작성 및 검토, 코드작성(user.js, diary.js)
-- 유영 🧞 : **api 명세서 wiki(calander.js)**, ERD 작성 및 검토, 코드작성(calander.js)
+- all : **기능 명세서 정리**, **테이블 초기 셋팅(변수이름 서)**, **보일러플레이트 작성**, **Dependencies Module작성**, **api에 해당하는 뷰캡쳐**,
+- 서영 🧞‍♂️ : **api 명세서 스프레드시트 정리**, **api 명세서 wiki(lecture.js, notice.js)**, **SQL연결**, **ERD 검토**, **코드작성(lecture.js)**, **Bucket연결**, **EC2연결**
+- 세희 🧞‍♀️ : **api 명세서 wiki(user.js, diary.js, notice.js)**, **ERD 작성 및 검토**, **코드작성(user.js, diary.js, notice.js)**
+- 유영 🧞 : **api 명세서 wiki(calander.js)**,** ERD 작성 및 검토**, **코드작성(calander.js, notice.js)**
 
 ### 🛠 Dependencies Module (package.json) ✔️
 ```javascript
@@ -44,7 +47,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "aws-sdk": "^2.696.0",
@@ -58,7 +61,6 @@
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "pbkdf2": "^3.0.17",
-    "mysql": "^2.18.1",
     "promise-mysql": "^4.1.3",
     "rand-token": "^1.0.1"
   }

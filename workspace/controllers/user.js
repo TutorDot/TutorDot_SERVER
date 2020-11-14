@@ -50,6 +50,27 @@ module.exports = {
             .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
 
+            /*소셜로그인 역할까지 수정한 후 네이버 소셜 로그인 완료하기*/
+            socialGetAll: async (req, res) => {
+                const role = req.body;
+                const email = req.body;
+                const rolechange = await UserModel.updateRole(email, role);
+
+                if (!email || !role) {
+                    res.status(CODE.BAD_REQUEST)
+                        .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+                    return;
+                }
+                // 사용자 중인 아이디가 있는지 확인
+                if (await UserModel.checkUser(email)) {
+                    res.status(CODE.BAD_REQUEST)
+                        .send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_ID));
+                    return;
+                }
+                // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
+            res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.LOGIN_SUCCES, rolechange[0]));
+    },
     /* 
         ✔️ sign in
         METHOD : POST
@@ -68,7 +89,6 @@ module.exports = {
         if (!email || !password) {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
-
         }
 
         // User의 이메일 계정이 있는지 확인 - 없다면 NO_USER 반납
@@ -83,17 +103,22 @@ module.exports = {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.MISS_MATCH_PW));
         }
+        const 
+            role 
+        = await UserModel.getUserByRole(email);
         //jwt 생성
         const {
             token,
-            refreshToken
-        } = await jwt.sign(user[0]);
+            refreshToken}
+        = await jwt.sign(user[0]);
 
         // 로그인이 성공적으로 마쳤다면 - LOGIN_SUCCESS 전달
-        res.status(CODE.OK)
-            .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS, {
-                accessToken: token
-            }));
+            res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS,{
+                accessToken:token,
+                role:role[0].role
+            }
+            ));
     },
     readProfile: async (req, res) => {
 
@@ -143,4 +168,6 @@ module.exports = {
         const result = await UserModel.deleteUser(userIdx);
         res.status(CODE.OK).send(util.success(CODE.OK, MSG.EXIT_SERVICE_SUCCESS));
     }
+
+
 }

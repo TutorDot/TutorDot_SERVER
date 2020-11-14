@@ -30,23 +30,22 @@ const lecture = {
             } = schedule;
             timeTable[day] = [orgStartTime, orgEndTime];
         }
-        //console.log(timeTable);
 
         const week = ["일", "월", "화", "수", "목", "금", "토"];
         let cnt = count;
         let curDate = new Date()
-        console.log('wwww', new Date().toString())
+        //console.log('wwww', new Date().toString())
         // curDate.setHours(curDate.getHours() + 9)
         let index = curDate.getDay()
         let curDay = week[index];
         let times = doneTimes + 1;
         while (cnt < totalHours) {
             //console.log(cnt)
-            console.log('c', curDate, curDay)
+            //console.log('c', curDate, curDay)
             // 현재 요일과 입력 요일이 같다면
             if (Object.keys(timeTable).includes(curDay)) {
                 let date = await lecture.DateToFormattedString(curDate)
-                console.log(cnt, totalHours)
+                //console.log(cnt, totalHours)
                 // 시간 계산
                 const hour = await lecture.calcHour(timeTable[curDay][0], timeTable[curDay][1]);
                 //console.log(hour)
@@ -185,7 +184,7 @@ const lecture = {
 
     },
 
-    /* 모든 게시글 조회  put : [ /lecture/:lid] */
+    /* 수업 수정  put : [ /lecture/:lid] */
     updateLecture: async (req, res) => {
         const userIdx = req.decoded.userId;
         const {
@@ -226,14 +225,14 @@ const lecture = {
         if (updateId === -1) {
             return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
         }
-        console.log('수업 수정 성공')
+        //console.log('수업 수정 성공')
 
         // 이전 스케줄 삭제
         const isDeleted = await Lecture.deleteSchedules(lid);
         if (isDeleted === -1) {
             return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
         }
-        console.log('이전 스케줄 삭제 성공')
+        //console.log('이전 스케줄 삭제 성공')
 
         // 수업 스케줄 셋팅 자동 추가
         for (let schedule of schedules) {
@@ -247,34 +246,35 @@ const lecture = {
                 return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
             }
         }
-        console.log('새로운 스케줄로 수정 성공')
+        //console.log('새로운 스케줄로 수정 성공')
 
         // 오늘 이전 스케쥴 시간 받아오기
         const todayDate = new Date()
+        // 9 더하는 부분 검토해야함
         todayDate.setHours(todayDate.getHours() + 9)
         const todayDateString = todayDate.toISOString().slice(0, 10)
-        console.log(todayDateString)
+        //console.log(todayDateString)
         const result = await Lecture.getSoFar(todayDateString, lid)
-        console.log(result)
+        //console.log(result)
 
         const doneTimes = result[0]['count(hour)'] || 0
         const doneHours = result[0]['sum(hour)'] || 0
-        console.log(doneTimes, doneHours)
+        //console.log(doneTimes, doneHours)
 
-        // 오늘 이후 스케쥴 삭제
-        if (doneTimes !== 0) {
-            const deleteId = await Lecture.deleteSoFar(todayDateString, lid)
-            if (deleteId === -1) {
-                return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
-            }
+        // 오늘 이후 스케쥴 삭제 - doneTime이 0 일때 중복상황 예외처리
+        //if (doneTimes !== 0) { 
+        const deleteId = await Lecture.deleteSoFar(todayDateString, lid)
+        if (deleteId === -1) {
+            return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
         }
-        console.log('오늘 이후 스케쥴 삭제 성공')
+        //}
+        //console.log('오늘 이후 스케쥴 삭제 성공')
 
         // 디폴트 스케줄 있을 때 class 디비에 일정 자동 수정
         if (schedules.length !== 0) {
             lecture.createCnDAuto(doneTimes, doneHours, schedules, lid, orgLocation, totalHours);
         }
-        console.log('오늘 이후 스케쥴 삭제 성공')
+        //console.log('오늘 이후 스케쥴 자동 재셋팅 성공')
 
         // ** 수업 정보 변경 성공 **
         res.status(CODE.OK).send(util.success(CODE.NO_CONTENT, MSG.CHANGE_LECTURE_SUCCESS));

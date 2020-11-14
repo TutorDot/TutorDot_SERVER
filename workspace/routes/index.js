@@ -24,6 +24,7 @@ router.use("/diary", require("./diary"));
 // 알림
 router.use("/notice", require("./notice"));
 
+<<<<<<< HEAD
 var admin = require("firebase-admin");
 
 var serviceAccount = require("/Users/yooyounglee/Documents/tutordot-ff6d6-firebase-adminsdk-paa4m-95db774518.json");
@@ -48,5 +49,9 @@ admin.messaging().sendToDevice(registrationToken, payload).then(function(respons
 .catch(function(error){
   console.log("Error sending message: ", error);
 });
+=======
+//소셜로그인
+router.use("/login",require("./login.js"));
+>>>>>>> 86e510e84b27f4069f1be57db1fb5e526b5fc40f
 
 module.exports = router;

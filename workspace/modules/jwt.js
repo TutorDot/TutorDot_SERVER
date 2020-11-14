@@ -11,7 +11,7 @@ module.exports = {
     sign: async (user) => {
         const payload = {
             userId: user.userId,
-            name: user.userName
+            name: user.userName,
         };
         const result = {
             token: jwt.sign(payload, secretKey, options),
