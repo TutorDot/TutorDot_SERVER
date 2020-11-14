@@ -1,15 +1,12 @@
 const pool = require('../modules/pool');
 const noticeTable = 'notice';
-
+const userTable = 'user';
 
 
 const notice = {
-    getNoticeId: async (userIdx) => {
-        const value = 'noticeDate, lectureId, lectureName, color, noticeType';
-        const query = `SELECT ${value} FROM ${noticeTable}
-        INNER JOIN lecture ON notice.lecture_lectureId = lecture.lectureId
-        INNER JOIN connect ON notice.lecture_lectureId = connect.lecture_lectureId
-        WHERE connect.user_userId = ${userIdx} AND notice.lecture_lectureId = ${lid}`;
+    getUserName: async (userIdx) => {
+        const value = 'userName';
+        const query = `SELECT ${value} FROM ${userTable} WHERE userId = ${userIdx}`;
 
         try {
             const result = await pool.queryParam(query);

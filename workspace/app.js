@@ -14,7 +14,7 @@ const app = express();
 app.use(passport.initialize());
 app.use(passport.session());
 
-// cors
+// // cors
 app.use(cors());
 
 // view engine setup

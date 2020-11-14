@@ -10,6 +10,6 @@ router.get('/', AuthMiddleware.checkToken, NoticeController.getAll);
 router.get('/:lid', AuthMiddleware.checkToken, NoticeController.getNoticeId);
 
 // 수업일지가 추가되었습니다.
-router.get('/addlecture', AuthMiddleware.checkToken, NoticeController.getNoticeId);
+router.get('/addlecture', AuthMiddleware.checkToken, NoticeController.pushmsg);
 
 module.exports = router;
