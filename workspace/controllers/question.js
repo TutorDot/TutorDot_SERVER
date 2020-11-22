@@ -4,6 +4,15 @@ const statusCode = require('../modules/statusCode');
 const resMessage = require('../modules/responseMessage');
 
 const question = {
+    /*전체 수업 질문 조회 get : [ / ]*/
+    getAll: async (req, res) => {
+        const userIdx = req.decoded.userId; 
+
+        const questions = await Question.getAll(userIdx);
+        res.status(statusCode.OK)
+            .send(util.success(statusCode.OK, resMessage.READ_TOTAL_QUESTION_SUCCESS, questions));
+    },
+
     /*특정 수업 질문 조회 get : [ /:lid ]*/
     getLecture: async (req, res) => {
         const userIdx = req.decoded.userId; 

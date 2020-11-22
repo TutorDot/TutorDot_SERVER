@@ -4,6 +4,28 @@ const questionTable = 'question';
 const connectTable = 'connect';
 
 const question = {
+    getAll: async (userIdx) => {
+        const data = 'questionId, lecture.lectureName, lecture.color, content, questionTime, questionUrl';
+        const query = `SELECT ${data}
+        FROM ${questionTable}
+        JOIN ${lectureTable} ON ${questionTable}.lecture_lectureId = ${lectureTable}.lectureId
+        JOIN ${connectTable} ON ${lectureTable}.lectureId = ${connectTable}.lecture_lectureId 
+        WHERE ${connectTable}.user_userId=${userIdx};`;
+
+        try {
+            const result = await pool.queryParam(query);
+            console.log(result);
+            return result;
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('getAll ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('getAll ERROR : ', err);
+            throw err;
+        }
+    },
+
     getLecture: async (userIdx, lectureIdx) => {
         const data = 'questionId, lecture.lectureName, lecture.color, content, questionTime, questionUrl';
         const query = `SELECT ${data}

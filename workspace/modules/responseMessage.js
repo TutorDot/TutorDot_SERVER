@@ -144,6 +144,8 @@ module.exports = {
 
     //질문란
 
+    READ_TOTAL_QUESTION_SUCCESS: "전체 수업 질문 조회 성공",
+
     READ_SPECIFIC_QUESTION_SUCCESS: "특정 수업 질문 조회 성공",
 
     NO_QUESTION: "존재하지 않는 질문입니다.",
