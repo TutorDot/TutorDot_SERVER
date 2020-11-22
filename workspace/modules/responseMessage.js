@@ -16,6 +16,8 @@ module.exports = {
 
     CID_NULL_VALUE: "cid값이 없습니다.",
 
+    QID_NULL_VALUE: "qid값이 없습니다.",
+
     //수업관리, 수업일지
 
     NO_LECTURE: "해당 수업이 없습니다. lid를 확인해 주세요.",
@@ -139,6 +141,14 @@ module.exports = {
     //캘린더 [일정 삭제]
 
     DELETE_CLASS_SUCCESS: "일정 삭제 성공",
+
+    //질문란
+
+    READ_SPECIFIC_QUESTION_SUCCESS: "특정 수업 질문 조회 성공",
+
+    NO_QUESTION: "존재하지 않는 질문입니다.",
+
+    READ_QUESTION_SUCCESS: "상세 질문 조회 성공",
 
     //알림 [상시 알림 조회] , [자정 알림 조회]
 

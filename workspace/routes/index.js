@@ -21,6 +21,9 @@ router.use("/calander", require("./calander"));
 // 수업일지
 router.use("/diary", require("./diary"));
 
+//질문란
+router.use("/question", require("./question"));
+
 // 알림
 router.use("/notice", require("./notice"));
 
