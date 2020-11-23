@@ -103,7 +103,7 @@ const lecture = {
     },
 
     /* 수업 연결 [ /lecture/:lid ] */
-    createConnect: async (userIdx, lectureId) => {
+    createConnect: async (userIdx, lectureId) => { // code 추가
         const fields = 'user_userId, lecture_lectureId';
         const questions = `?, ?`;
         const values = [userIdx, lectureId];
@@ -306,7 +306,7 @@ const lecture = {
         }
     },
     
-    /* 연결 확인*/
+    /* 연결 확인 */
 //     checkConnect: async (userIdx, code) =>{
 //         const query = `SELECT code FROM ${connectTable} WHERE code="${code}" AND user_userId = "${userIdx}"`;
 //         try {
