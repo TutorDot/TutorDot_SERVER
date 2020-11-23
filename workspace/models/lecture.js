@@ -316,7 +316,7 @@ const lecture = {
             console.log('checkConnect ERROR : ', err);
             throw err;
         }
-    }
+    },
 
     /* 수업 초대  get : [ /lecture/invitation/:lid ] */
     getCodeById: async (lid) => {
