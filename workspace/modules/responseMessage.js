@@ -89,6 +89,8 @@ module.exports = {
     NO_CODE: "code값이 없습니다",
 
     NO_LECTURE_CODE: "해당 수업이 없습니다. code 값을 확인해주세요.",
+    
+    ALREADY_CONNECT: "이미 연결된 수업입니다. code 값을 확인해주세요.",
 
     //수업 관리 [수업 추가]
 
