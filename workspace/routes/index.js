@@ -29,7 +29,7 @@ router.use("/notice", require("./notice"));
 
 var admin = require("firebase-admin");
 
-var serviceAccount = require("/Users/yooyounglee/Documents/tutordot-ff6d6-firebase-adminsdk-paa4m-95db774518.json");
+var serviceAccount = require("C:/Users/권세희/Desktop/tutordot-ff6d6-firebase-adminsdk-paa4m-95db774518.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

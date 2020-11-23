@@ -68,11 +68,19 @@ const user = {
         try {
             return await pool.queryParam(query);
         } catch (err) {
-            console.log('getUserById ERROR : ', err);
+            console.log('getUserByRoleUserName ERROR : ', err);
             throw err;
         }
     },
-    
+    getUserByUserName: async (email) => {
+        const query = `SELECT userName FROM ${table} WHERE email="${email}"`;
+        try {
+            return await pool.queryParam(query);
+        } catch (err) {
+            console.log('getUserByRoleUserName ERROR : ', err);
+            throw err;
+        }
+    },
     getUserByNaverRole: async (socialId) => {
         const query = `SELECT role FROM ${table} WHERE email="${socialId}"`;
         try {

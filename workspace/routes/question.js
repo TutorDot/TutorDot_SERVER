@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const questionController = require('../controllers/question');
 const AuthMiddleware = require('../middlewares/auth');
+const upload = require('../modules/multer');
+
+/*질문 생성 post : [ / ]*/
+router.post('/',AuthMiddleware.checkToken, upload.single('questionUrl'), questionController.questionSignup);
 
 /*전체 수업 질문 조회 get : [ / ]*/
 router.get('/', AuthMiddleware.checkToken, questionController.getAll);

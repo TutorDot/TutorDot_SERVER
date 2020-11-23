@@ -103,9 +103,8 @@ module.exports = {
             return res.status(CODE.BAD_REQUEST)
                 .send(util.fail(CODE.BAD_REQUEST, MSG.MISS_MATCH_PW));
         }
-        const 
-            role 
-        = await UserModel.getUserByRole(email);
+        const role = await UserModel.getUserByRole(email);
+        const userName = await UserModel.getUserByUserName(email);
         //jwt 생성
         const {
             token,
@@ -116,7 +115,8 @@ module.exports = {
             res.status(CODE.OK)
             .send(util.success(CODE.OK, MSG.LOGIN_SUCCESS,{
                 accessToken:token,
-                role:role[0].role
+                role:role[0].role,
+                userName:userName[0].userName
             }
             ));
     },
@@ -149,7 +149,7 @@ module.exports = {
             // image type check
             const type = req.file.mimetype.split('/')[1];
             if (type !== 'jpeg' && type !== 'jpg' && type !== 'png') {
-                return res.status(CODE.OK).send(util.fail(CODE.OK, MSG.UNSUPPORTED_TYPE));
+                return res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.UNSUPPORTED_TYPE));
             }
         }
 

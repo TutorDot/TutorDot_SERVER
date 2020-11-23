@@ -1,4 +1,6 @@
 module.exports = {
+    
+    UNSUPPORTED_TYPE: "사진 형식의 확장자를 사용하여 주세요",
 
     NULL_VALUE: "필요한 값이 없습니다",
 
@@ -151,6 +153,8 @@ module.exports = {
     NO_QUESTION: "존재하지 않는 질문입니다.",
 
     READ_QUESTION_SUCCESS: "상세 질문 조회 성공",
+
+    POST_QUESTION_SUCCESS: "질문 작성 성공",
 
     //알림 [상시 알림 조회] , [자정 알림 조회]
 

@@ -11,7 +11,7 @@ module.exports = {
 
        //이미지 사진이 아예 없음
        if(images === undefined){
-           return res.status(CODE.OK)
+           return res.status(CODE.BAD_REQUEST)
                .send(util.fail(CODE.BAD_REQUEST, "이미지를 첨부하세요"));
        }
        const location = images.map(img => img.location);

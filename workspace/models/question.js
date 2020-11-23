@@ -4,6 +4,22 @@ const questionTable = 'question';
 const connectTable = 'connect';
 
 const question = {
+    questionSignup: async (content, questionUrl, questionTime, lectureId) => {
+        const fields = 'content, questionUrl, questionTime, lecture_lectureId';
+        const questions = `?, ?, ?, ?`;
+        const values = [content, questionUrl, questionTime, lectureId];
+        const query = `INSERT INTO ${questionTable}(${fields}) VALUES(${questions})`;
+        try {
+            const result = await pool.queryParamArr(query, values);
+            //console.log(result)
+            const insertId = result.insertId;
+            //console.log(insertId);
+            return insertId;
+        } catch (err) {
+            console.log('questionSignup ERROR : ', err);
+            throw err;
+        }
+    },
     getAll: async (userIdx) => {
         const data = 'questionId, lecture.lectureName, lecture.color, content, questionTime, questionUrl';
         const query = `SELECT ${data}
