@@ -305,6 +305,18 @@ const lecture = {
             throw err;
         }
     },
+    
+    /* 연결 확인*/
+//     checkConnect: async (userIdx, code) =>{
+//         const query = `SELECT code FROM ${connectTable} WHERE code="${code}" AND user_userId = "${userIdx}"`;
+//         try {
+//             const result = await pool.queryParam(query);
+//             return result
+//         } catch (err) {
+//             console.log('checkConnect ERROR : ', err);
+//             throw err;
+//         }
+//     }
 
     /* 수업 초대  get : [ /lecture/invitation/:lid ] */
     getCodeById: async (lid) => {
