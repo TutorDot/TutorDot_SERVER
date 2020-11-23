@@ -335,11 +335,11 @@ const lecture = {
         }
         
         // 이미 연결된 수업
-//         const isConnected = await Lecture.checkConnect(userIdx, code);
-//         if (isConnected.length !== 0) {
-//             res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_CONNECT));
-//             return;
-//         }
+        const isConnected = await Lecture.checkConnect(userIdx, code);
+        if (isConnected.length !== 0) {
+            res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_CONNECT));
+            return;
+        }
 
         // 해당 수업이 없을 때
         const result = await Lecture.checkCode(code);
