@@ -333,6 +333,13 @@ const lecture = {
             res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.NO_CODE));
             return;
         }
+        
+        // 이미 연결된 수업
+//         const isConnected = await Lecture.checkConnect(code);
+//         if (isConnected.length !== 0) {
+//             res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_CONNECT));
+//             return;
+//         }
 
         // 해당 수업이 없을 때
         const result = await Lecture.checkCode(code);
@@ -341,7 +348,7 @@ const lecture = {
             return;
         }
         const lectureId = result[0].lectureId;
-
+        
         // 수업 연결
         if (!userIdx) {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
