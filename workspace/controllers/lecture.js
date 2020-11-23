@@ -335,7 +335,7 @@ const lecture = {
         }
         
         // 이미 연결된 수업
-//         const isConnected = await Lecture.checkConnect(code);
+//         const isConnected = await Lecture.checkConnect(userIdx, code);
 //         if (isConnected.length !== 0) {
 //             res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_CONNECT));
 //             return;
@@ -353,7 +353,7 @@ const lecture = {
         if (!userIdx) {
             return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
         }
-        const conId = await Lecture.createConnect(userIdx, lectureId);
+        const conId = await Lecture.createConnect(userIdx, lectureId); // code 추가
         if (conId === -1) {
             return res.status(CODE.DB_ERROR).send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
         }
