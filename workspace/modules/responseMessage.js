@@ -40,7 +40,7 @@ module.exports = {
 
     DELETE_USER: "회원 탈퇴 성공",
 
-    ALREADY_ID: "존재하는 email 입니다.",
+    ALREADY_ID: "존재하는 id 입니다.",
 
 
     // 로그인
