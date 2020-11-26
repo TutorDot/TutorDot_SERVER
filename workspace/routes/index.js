@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const firebaseKey = require('../config/firebase.json');
+//const firebaseKey = require('../config/firebase.json');
 
 /* GET home page. */
 
