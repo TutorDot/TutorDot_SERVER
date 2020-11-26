@@ -308,7 +308,7 @@ const lecture = {
     
     /* 연결 확인 */
     checkConnect: async (userIdx, code) =>{
-        const query = `SELECT user_userId, code FROM ${connectTable} INNER JOIN ${lectureTable} WHERE lecture_lectureId = lecture.lectureId AND user_userId = "${userIdx}" code="${code}"`;
+        const query = `SELECT user_userId, code FROM ${connectTable} INNER JOIN ${lectureTable} WHERE lecture_lectureId = lecture.lectureId AND user_userId = "${userIdx}" AND code="${code}"`;
         try {
             const result = await pool.queryParam(query);
             return result
