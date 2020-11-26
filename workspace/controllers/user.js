@@ -49,7 +49,22 @@ module.exports = {
         res.status(CODE.OK)
             .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
-
+    signinDuplication: async (req, res) => {
+        const {
+            email
+        } = req.body;
+        if (!email) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+            return;
+        }
+        // 사용자 중인 아이디가 있는지 확인
+        if (await UserModel.checkUser(email)) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_ID));
+            return;
+        }
+    },
             /*소셜로그인 역할까지 수정한 후 네이버 소셜 로그인 완료하기*/
             socialGetAll: async (req, res) => {
                 const role = req.body;
