@@ -64,6 +64,10 @@ module.exports = {
                 .send(util.fail(CODE.BAD_REQUEST, MSG.ALREADY_ID));
             return;
         }
+        else {
+            res.status(CODE.OK)
+            .send(util.success(CODE.OK, MSG.USE_ID));
+        }
     },
             /*소셜로그인 역할까지 수정한 후 네이버 소셜 로그인 완료하기*/
             socialGetAll: async (req, res) => {

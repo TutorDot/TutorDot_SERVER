@@ -41,7 +41,8 @@ module.exports = {
     DELETE_USER: "회원 탈퇴 성공",
 
     ALREADY_ID: "존재하는 id 입니다.",
-
+    
+    USE_ID : "사용가능한 아이디입니다 ",
 
     // 로그인
 
