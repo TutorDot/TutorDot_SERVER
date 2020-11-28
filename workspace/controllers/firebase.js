@@ -50,16 +50,19 @@ module.exports = {
         
         const code = await firebaseModel.getFirebaseCode(lectureId);
         console.log(code);
-        var registrationToken = "cUbK4zaSSxm710dyYu3OQn:APA91bG1j90tt1RmrK7RtjBGd9SPRuL1vxhDiQZSTxFTx8DkD4KNz1XMY59JHJLY_ESw1jRlXzkgTLm7WvZvWKxDFztv_RbZ58x3ryeN5jyIpr3d2h9COTrriTlEngxY98pptMt6yDqB";
+        var registrationToken = code;
 
         const LectureName = await firebaseModel.getLectureName(userIdx, lectureId);
+        console.log(LectureName);
         const Role = await firebaseModel.getRole(userIdx, lectureId);
+        console.log(Role);
         const UserName = await firebaseModel.getUserName(userIdx, lectureId);
-
+        console.log(UserName);
+        
         var payload = {
         notification: {
             title: "수업 일지가 추가되었습니다.",
-            body: `${Role} + 업데이트 되었습니다.`
+            body: `${UserName} + ${Role} +의+ ${LectureName} + 업데이트 되었습니다.`
         }
         };
 
