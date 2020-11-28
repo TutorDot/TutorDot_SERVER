@@ -2,7 +2,7 @@ const pool = require('../modules/pool');
 const classTable = 'class';
 const lectureTable = 'lecture';
 const connectTable = 'connect';
-
+///testgoqske
 
 const calander = {
     getAll: async (userIdx) => {
