@@ -95,19 +95,6 @@ const calander = {
         return int_endTime - int_startTime;
     },
 
-    /* 입력 받은 날짜 직전 일정 회차 받아오기 */
-    getPrevTimes: async (date, lectureIdx) => {
-        const query = `SELECT MAX(times) FROM ${classTable} where classDate < "${date}" and lecture_lectureId = "${lectureIdx}";`
-        try {
-            const result = await pool.queryParam(query);
-            //console.log("getPrevTimes: ", result[0]['MAX(times)']);
-            return result[0]['MAX(times)'];
-        } catch (err) {
-            console.log('getPrevTimes ERROR : ', err);
-            throw err;
-        }
-    },
-
     getClassIdx: async() => {
         const query = `SELECT MAX(classId) FROM ${classTable}`;
 
@@ -124,9 +111,27 @@ const calander = {
         }
     },
 
-    /*이후 회차 수정(++)*/
-    upgradeTimes: async(times, lectureIdx) => {
-        const query = `UPDATE ${classTable} SET times = times+1 WHERE times>${times} and lecture_lectureId=${lectureIdx}`;
+    getLectureId: async(classIdx) => {
+        const query = `SELECT lecture_lectureId FROM ${classTable} WHERE classId="${classIdx}";`;
+        console.log("classIdx: ", classIdx);
+
+        try {
+            const result = await pool.queryParam(query);
+            //console.log("getLectureId: ", result);
+            return result[0] && result[0].lecture_lectureId;
+        } catch (err) {
+            if (err.errno == 1062) {
+                console.log('getLectureId ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('getLectureId ERROR : ', err);
+            throw err;
+        }
+    },
+
+    /*회차 재정렬*/
+    reorderTimes: async(lectureIdx) => {
+        const query = `SET @i := 0; UPDATE ${classTable} SET times = (@i:=@i+1) WHERE lecture_lectureId = ${lectureIdx} ORDER BY classDate, startTime;`;
 
         try {
             const result = await pool.queryParam(query);
@@ -135,19 +140,17 @@ const calander = {
             return insertId;
 
         } catch (err) {
-            console.log('upgradeTimes ERROR : ', err);
+            console.log('reorderTimes ERROR : ', err);
             throw err;
         }
     },
 
     createClass: async(lectureId, date, startTime, endTime, location) => {
         let hour = await calander.calcHour(startTime, endTime);
-        let latestTimes = await calander.getPrevTimes(date, lectureId);
-        if(latestTimes==null) latestTimes = 0; //첫번쨰 수업 이전 회차 생성하는 경우 처리
-        await calander.upgradeTimes(latestTimes, lectureId);
+        let times = 0; //일단 회차에 임의값 넣기
         const fields = 'startTime, endTime, location, hour, times, classDate, lecture_lectureId';
         const questions = `?, ?, ?, ?, ?, ?, ?`;
-        const values = [startTime, endTime, location, hour, latestTimes+1, date, lectureId];
+        const values = [startTime, endTime, location, hour, times, date, lectureId];
         const query = `INSERT INTO ${classTable}(${fields}) VALUES (${questions})`;
 
         try {
@@ -221,49 +224,14 @@ const calander = {
             return insertId;
 
         } catch (err) {
-            console.log('updateClass ERROR : ', err);
-            throw err;
-        }
-    },
-
-    /*이후 회차 수정(--)*/
-    downgradeTimes: async(times, lectureIdx) => {
-        const query = `UPDATE ${classTable} SET times = times-1 WHERE times>${times} and lecture_lectureId=${lectureIdx}`;
-
-        try {
-            const result = await pool.queryParam(query);
-            console.log(result); // 객체 반환, 데이터 수정 실패시 -1 뜨는듯
-            const insertId = result.insertId;
-            return insertId;
-
-        } catch (err) {
-            console.log('downgradeTimes ERROR : ', err);
-            throw err;
-        }
-    },
-
-    getTimesAndLectureId: async(classIdx) => {
-        const query = `SELECT times, lecture_lectureId FROM ${classTable} WHERE classId = ${classIdx}`;
-
-        try {
-            const result = await pool.queryParam(query);
-            return result[0];
-        } catch (err) {
-            if (err.errno == 1062) {
-                console.log('getTimesAndLectureId ERROR : ', err.errno, err.code);
-                return -1;
-            }
-            console.log('getTimesAndLectureId ERROR : ', err);
+            console.log('putClass ERROR : ', err);
             throw err;
         }
     },
 
     deleteClass: async(classIdx) => {
-        let data = await calander.getTimesAndLectureId(classIdx);
-        let times = data['times'];
-        let lectureIdx = data['lecture_lectureId'];
-        await calander.downgradeTimes(times, lectureIdx);
-        const query = `DELETE FROM ${classTable} WHERE classId="${classIdx}"`;
+        const query = `DELETE FROM ${classTable} WHERE classId=${classIdx}`;
+
         try {
             const result = await pool.queryParam(query);
             console.log(result); // 객체 반환, 데이터 삭제 실패시 -1 뜨는듯

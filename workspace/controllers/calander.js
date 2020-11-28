@@ -53,9 +53,16 @@ const calander = {
                 .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
 
-        //일지 생성
-        const idx2 = await Calander.createDiary(lectureId);
+        //회차 재정렬
+        const idx2 = await Calander.reorderTimes(lectureId);
         if (idx2 === -1) {
+            return res.status(statusCode.DB_ERROR)
+                .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //일지 생성
+        const idx3 = await Calander.createDiary(lectureId);
+        if (idx3 === -1) {
             return res.status(statusCode.DB_ERROR)
                 .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
@@ -105,9 +112,17 @@ const calander = {
                 .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_CLASS));
         }
 
+        var lectureId = await Calander.getLectureId(classIdx);
         //일정 수정
-        const idx = await Calander.putClass(classIdx, date, startTime, endTime, location);
-        if (idx === -1) {
+        const idx1 = await Calander.putClass(classIdx, date, startTime, endTime, location);
+        if (idx1 === -1) {
+            return res.status(statusCode.DB_ERROR)
+                .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //회차 재정렬
+        const idx2 = await Calander.reorderTimes(lectureId);
+        if (idx2 === -1) {
             return res.status(statusCode.DB_ERROR)
                 .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
@@ -130,9 +145,20 @@ const calander = {
             return res.status(statusCode.BAD_REQUEST)
                 .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_CLASS));
         }
+        
+        //lectureId 얻어오기(회차 재정렬용)
+        let lectureId = await Calander.getLectureId(classIdx);
 
+        //일정 삭제
         const idx = await Calander.deleteClass(classIdx);
         if (idx === -1) {
+            return res.status(statusCode.DB_ERROR)
+                .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //회차 재정렬
+        const idx2 = await Calander.reorderTimes(lectureId);
+        if (idx2 === -1) {
             return res.status(statusCode.DB_ERROR)
                 .send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
