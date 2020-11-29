@@ -163,6 +163,11 @@ module.exports = {
 
     FETCH_NEW_ALARM: "새로운 알림 불러오기",
 
+    FIREBASECODE_SECCESS : "파이어베이스 클라이언트 코드 삽입 성공",
+
+    UPDATE_DIARY : "수업 일지 업데이트 성공",
+
+
     //알림 [전체 알림 조회]
 
     READ_TOTAL_ALARM_SUCCESS: "전체 알림 조회 성공",
