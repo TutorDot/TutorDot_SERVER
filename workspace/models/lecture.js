@@ -128,6 +128,10 @@ const lecture = {
         WHERE connect.lecture_lectureId = lecture.lectureId and connect.user_userId = "${userIdx}";`
         try {
             const result = await pool.queryParam(query);
+
+            let profileUrls;
+            let schedules;
+
             //let profileUrls;
             let dataArray;
             for (let res of result) {
@@ -139,6 +143,7 @@ const lecture = {
                 // schedules 가져오기
                 //schedules = await lecture.getSchedules(lectureId);
                 res['schedules'] = dataArray[1];
+
             }
             return result;
         } catch (err) {
