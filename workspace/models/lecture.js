@@ -128,6 +128,7 @@ const lecture = {
         WHERE connect.lecture_lectureId = lecture.lectureId and connect.user_userId = "${userIdx}";`
         try {
             const result = await pool.queryParam(query);
+<<<<<<< HEAD
             let profileUrls;
             let schedules;
             for (let res of result) {
@@ -138,6 +139,19 @@ const lecture = {
                 // schedules 가져오기
                 schedules = await lecture.getSchedules(lectureId);
                 res["schedules"] = schedules;
+=======
+            //let profileUrls;
+            let dataArray;
+            for (let res of result) {
+                const lectureId = res.lectureId;
+                dataArray = [await lecture.getProfiles(lectureId, userIdx), await lecture.getSchedules(lectureId)];
+                // profileImg 가져오기
+                //profileUrls = await lecture.getProfiles(lectureId, userIdx);
+                res['profileUrls'] = dataArray[0];
+                // schedules 가져오기
+                //schedules = await lecture.getSchedules(lectureId);
+                res['schedules'] = dataArray[1];
+>>>>>>> bcbb7dc793da8888744a6824568c05b033804ef2
             }
             return result;
         } catch (err) {
