@@ -6,7 +6,7 @@ const classTable = 'class';
 
 const diary = {
     getAll: async (userIdx) => {
-        const value = 'diaryId, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
+        const value = 'diaryId, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
         const query = `SELECT ${value} FROM connect 
         INNER JOIN lecture ON lecture.lectureId = connect.lecture_lectureId
         INNER JOIN diary ON diary.lecture_lectureId = connect.lecture_lectureId
@@ -40,7 +40,7 @@ const diary = {
         }
     },
     getDiaryBylIdUserIdx: async (userIdx, lid) => {
-        const value = 'diaryId, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
+        const value = 'diaryId, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
         const query = `SELECT ${value} FROM connect 
         INNER JOIN lecture ON lecture.lectureId = connect.lecture_lectureId
         INNER JOIN diary ON diary.lecture_lectureId = connect.lecture_lectureId
