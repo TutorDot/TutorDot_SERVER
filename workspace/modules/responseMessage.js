@@ -44,6 +44,10 @@ module.exports = {
     
     USE_ID : "사용가능한 아이디입니다 ",
 
+    CHECK_ID : "아이디가 존재하지 않습니다.",
+
+    CHANGE_PASSWORD : "비밀번호가 변경되었습니다.",
+
     // 로그인
 
     LOGIN_SUCCESS: "로그인 성공",

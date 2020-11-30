@@ -49,6 +49,39 @@ module.exports = {
         res.status(CODE.OK)
             .send(util.success(CODE.NO_CONTENT, MSG.CREATED_USER));
     },
+    ChangePassword: async (req, res) => {
+        const {
+            email,
+            newPassword
+        } = req.body;
+
+        if (!email  || !newPassword) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+            return;
+        }
+          // 사용자 중인 아이디가 있는지 확인
+        if ( !await UserModel.checkUser(email)) {
+            res.status(CODE.BAD_REQUEST)
+                .send(util.fail(CODE.BAD_REQUEST, MSG.CHECK_ID));
+            return;
+        }
+
+        const {
+            salt,
+            hashed
+        } = await encrypt.encrypt(newPassword);
+
+        const idx = await UserModel.ChangePassword(email, salt, hashed);
+
+        if (idx === -1) {
+            return res.status(CODE.DB_ERROR)
+                .send(util.fail(CODE.DB_ERROR, MSG.DB_ERROR));
+        }
+        res.status(CODE.OK)
+            .send(util.success(CODE.NO_CONTENT, MSG.CHANGE_PASSWORD));
+    },
+    
     signinDuplication: async (req, res) => {
         const {
             email

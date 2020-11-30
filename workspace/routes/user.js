@@ -14,6 +14,10 @@ router.post('/signin', UserController.signin);
 //로그인 중복 확인
 router.post('/signin/duplication', UserController.signinDuplication);
 
+
+//로그인 중복 확인
+router.post('/changepassword', UserController.ChangePassword);
+
 //간편 프로필 조회
 router.get('/profile', AuthMiddleware.checkToken, UserController.readProfile);
 

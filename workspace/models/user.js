@@ -18,6 +18,19 @@ const user = {
             throw err;
         }
     },
+    ChangePassword: async (email, salt, newpassword) => {
+        const query = `UPDATE ${table} SET password="${newpassword}", salt="${salt}" WHERE email ="${email}"`;
+        try {
+            const result = await pool.queryParamArr(query);
+            //console.log(result)
+            const insertId = result.insertId;
+            //console.log(insertId);
+            return insertId;
+        } catch (err) {
+            console.log('ChangePassword ERROR : ', err);
+            throw err;
+        }
+    },
     signuprole: async (email, role) =>{
         const query = `UPDATE ${table} SET role="${role}" WHERE email ="${email}"`;
         try {
