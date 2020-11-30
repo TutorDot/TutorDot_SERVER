@@ -131,14 +131,6 @@ const lecture = {
 
             let profileUrls;
             let schedules;
-            for (let res of result) {
-                const lectureId = res.lectureId;
-                // profileImg 가져오기
-                profileUrls = await lecture.getProfiles(lectureId, userIdx);
-                res["profileUrls"] = profileUrls;
-                // schedules 가져오기
-                schedules = await lecture.getSchedules(lectureId);
-                res["schedules"] = schedules;
 
             //let profileUrls;
             let dataArray;
