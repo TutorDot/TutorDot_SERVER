@@ -6,11 +6,12 @@ const classTable = 'class';
 
 const diary = {
     getAll: async (userIdx) => {
-        const value = 'diaryId, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
+        const value = 'diaryId, profileUrl, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
         const query = `SELECT ${value} FROM connect 
         INNER JOIN lecture ON lecture.lectureId = connect.lecture_lectureId
         INNER JOIN diary ON diary.lecture_lectureId = connect.lecture_lectureId
         INNER JOIN class ON class.classId = diary.class_classId
+        INNER JOIN user ON user.userId = connect.user_userId
         where connect.user_userId = ${userIdx}`;
         try {
             const result = await pool.queryParam(query);
@@ -40,11 +41,12 @@ const diary = {
         }
     },
     getDiaryBylIdUserIdx: async (userIdx, lid) => {
-        const value = 'diaryId, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
+        const value = 'diaryId, profileUrl, lectureName, classDate, color, times, hour, depositCycle, classProgress, homework, hwPerformance';
         const query = `SELECT ${value} FROM connect 
         INNER JOIN lecture ON lecture.lectureId = connect.lecture_lectureId
         INNER JOIN diary ON diary.lecture_lectureId = connect.lecture_lectureId
         INNER JOIN class ON class.classId = diary.class_classId
+        INNER JOIN user ON user.userId = connect.user_userId
         where connect.user_userId = ${userIdx} AND connect.lecture_lectureId = ${lid}`;
 
         try {
