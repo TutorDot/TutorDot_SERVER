@@ -169,9 +169,9 @@ const lecture = {
 
     /* 수업 상세 조회  get : [ /lecture/:lid ] */
     getLectureById: async (userIdx, lectureId) => {
-        const query = `SELECT lectureName, color, orgLocation, bank, accountNo, depositCycle, price, userName, role, intro, profileUrl 
+        const query = `SELECT lectureId, color, orgLocation, bank, accountNo, depositCycle, price, userName, role, intro, profileUrl 
         FROM lecture as l INNER JOIN connect as c on c.lecture_lectureId = l.lectureId 
-        INNER JOIN user as u on c.user_userId = u.userId WHERE c.user_userId = ${userIdx} and l.lectureId = ${lectureId}`
+        INNER JOIN user as u on c.user_userId = u.userId WHERE l.lectureId = ${lectureId} AND role="tutor"`
         try {
             const result = await pool.queryParam(query);
             result[0]['schedules'] = await lecture.getSchedules(lectureId);
