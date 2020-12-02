@@ -79,7 +79,7 @@ const diary = {
         INNER JOIN class ON class.classId = diary.class_classId
         where connect.user_userId = ${userIdx} AND connect.lecture_lectureId = ${lid}`;
 
-        try {git 
+        try {
             const post = await pool.queryParam(query);
             // console.log(user) 배열로 나옴
             return post;
