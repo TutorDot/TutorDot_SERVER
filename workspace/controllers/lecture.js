@@ -102,7 +102,7 @@ const lecture = {
         }
 
         // 수업 중복
-        if (await Lecture.checkLecture(lectureName)) {
+        if (await Lecture.checkLecture(userIdx, lectureName)) {
             res.status(CODE.BAD_REQUEST).send(util.fail(CODE.BAD_REQUEST, MSG.REPEAT_LECTURE_NAME));
             return;
         }
