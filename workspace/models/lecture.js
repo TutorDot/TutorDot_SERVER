@@ -9,8 +9,9 @@ const connectTable = 'connect';
 const lecture = {
 
     /* 수업 중복 확인 */
-    checkLecture: async (name) => {
-        const query = `SELECT * FROM ${lectureTable} WHERE lectureName="${name}"`;
+    checkLecture: async (userIdx, name) => {
+        const query = `SELECT * FROM ${lectureTable} INNER JOIN ${connectTable} 
+        WHERE lecture_lectureId = lectureId AND user_userId = "${userIdx}" AND lectureName="${name}"`
         try {
             const result = await pool.queryParam(query);
             return result.length === 0 ? false : true
