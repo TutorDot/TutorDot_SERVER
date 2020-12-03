@@ -67,6 +67,8 @@ module.exports = {
 
     CHANGE_PROFILE_SUCCESS: "프로필 수정 성공",
 
+    CHANGE_INTRO_SUCCESS: "자기소개 수정 성공",
+
     //서비스 탈퇴
 
     EXIT_SERVICE_SUCCESS: "서비스 탈퇴 성공",

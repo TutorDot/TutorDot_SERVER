@@ -24,6 +24,9 @@ router.get('/profile', AuthMiddleware.checkToken, UserController.readProfile);
 //간편 프로필 수정
 router.put('/profile', AuthMiddleware.checkToken, upload.single('profile'), UserController.updateProfile);
 
+//간편 프로필 수정
+router.put('/intro', AuthMiddleware.checkToken, UserController.updateIntro);
+
 //서비스 탈퇴
 router.delete('/profile', AuthMiddleware.checkToken, UserController.deleteUser);
 

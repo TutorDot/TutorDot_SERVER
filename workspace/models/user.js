@@ -128,6 +128,20 @@ const user = {
         }
     },
 
+    updateIntro: async (userIdx, intro) => {
+        let query = `UPDATE ${table} SET intro="${intro}" WHERE userId="${userIdx}"`;
+        try {
+            await pool.queryParam(query);
+            //catch문이 실행 안되었다면 query문과 result을 리턴하여라
+            query = `SELECT userName, role, intro, profileUrl FROM ${table} WHERE userId="${userIdx}"`;
+            const result = await pool.queryParam(query);
+            return result;
+        } catch (err) {
+            console.log('update profile ERROR : ', err);
+            throw err;
+        }
+    },
+
     // 이메일로 role 수정
     updateRole: async (email, role) => {
         let query = `UPDATE ${table} SET role="${role}" WHERE email="${email}"`;

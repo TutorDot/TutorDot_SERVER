@@ -209,7 +209,25 @@ module.exports = {
         const result = await UserModel.updateProfile(userIdx, profileImg, intro);
         res.status(CODE.OK).send(util.success(CODE.OK, MSG.CHANGE_PROFILE_SUCCESS, result[0]));
     },
+    updateIntro: async (req, res) => {
+        // 데이터 받아오기
+        const {
+            intro
+        } = req.body;
 
+        const userIdx = req.decoded.userId; //jwt를 decoded시켜주는것이 체크토큰을 가지고오는것
+        //const profileImg = await req.file.location;
+        // data check - undefined
+        if (!userIdx) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        }
+        if (!intro) {
+            return res.status(CODE.OK).send(util.fail(CODE.BAD_REQUEST, MSG.NULL_VALUE));
+        }
+        // call model - database
+        const result = await UserModel.updateIntro(userIdx, intro);
+        res.status(CODE.OK).send(util.success(CODE.OK, MSG.CHANGE_INTRO_SUCCESS, result[0]));
+    },
     deleteUser: async (req, res) => {
         const userIdx = req.decoded.userId; //jwt를 decoded시켜주는것이 체크토큰을 가지고오는것
         // data check - undefined
