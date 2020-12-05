@@ -160,7 +160,6 @@ const lecture = {
         WHERE lecture_lectureId = "${lectureId}" and u.userId !="${userIdx}";`
         try {
             const result = await pool.queryParam(query);
-            if (!result) result = []
             return result
         } catch (err) {
             console.log('getProfiles ERROR : ', err);
