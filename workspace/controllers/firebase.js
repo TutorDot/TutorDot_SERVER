@@ -59,7 +59,9 @@ module.exports = {
         var payload = {
         notification: {
             title: "수업 일지가 추가되었습니다.",
-            body: `${Role} + 업데이트 되었습니다.`
+            body: `${Role} + 업데이트 되었습니다.`,
+            isScheduled : "true",
+            scheduledTime : "12:00:00"
         }
         };
 
