@@ -47,8 +47,8 @@ https://apps.apple.com/kr/app/%ED%8A%9C%ED%84%B0%EB%8B%B7-%ED%8A%9C%ED%84%B0%EB%
 ### 👭🏼 역할분담 ✔️
 - all : **기능 명세서 정리**, **테이블 초기 셋팅(변수이름 서)**, **보일러플레이트 작성**, **Dependencies Module작성**, **api에 해당하는 뷰캡쳐**,
 - 서영 🧞‍♂️ : **api 명세서 스프레드시트 정리**, **api 명세서 wiki(lecture.js, notice.js)**, **SQL연결**, **ERD 검토**, **코드작성(lecture.js)**, **Bucket연결**, **EC2연결**
-- 세희 🧞‍♀️ : **api 명세서 wiki(user.js, diary.js, notice.js)**, **ERD 작성 및 검토**, **코드작성(user.js, diary.js, notice.js)**
-- 유영 🧞 : **api 명세서 wiki(calander.js)**,** ERD 작성 및 검토**, **코드작성(calander.js, notice.js)**
+- 세희 🧞‍♀️ : **api 명세서 wiki(user.js, diary.js, notice.js)**, **ERD 작성 및 검토**, **코드작성(user.js, diary.js, notice.js)**, **EC2 및 RDS 유지보수**, **네이버 소셜 로그인 구현**
+- 유영 🧞 : **api 명세서 wiki(calander.js)**,**ERD 작성 및 검토**, **코드작성(calander.js, notice.js)**
 
 ### 🛠 Dependencies Module (package.json) ✔️
 ```javascript
